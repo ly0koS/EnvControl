@@ -211,7 +211,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
-
+  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000000);	//interrupt at 1us -> HAL_Delay base at 1us
 }
 
 /* FSMC initialization function */
