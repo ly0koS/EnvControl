@@ -71,16 +71,41 @@ void LCD_SetCursor(u16 XPOS,u16 YPOS)
 {
 	if(lcdcon.id==0X9241||lcdcon.id==0X5310)
 	{
-		LCD_W_REG(lcdcon.setxcmd);
-		LCD_W_DATA(XPOS>>8);
-		LCD_W_DATA(XPOS&0XFF);
-		LCD_W_REG(lcdcon.setycmd);
-		LCD_W_DATA(YPOS>>8);
-		LCD_W_DATA(YPOS&0XFF);
+		LCD_W_REGNUM(lcdcon.setxcmd);
+		LCD_W_DAT(XPOS>>8);
+		LCD_W_DAT(XPOS&0XFF);
+		LCD_W_REGNUM(lcdcon.setycmd);
+		LCD_W_DAT(YPOS>>8);
+		LCD_W_DAT(YPOS&0XFF);
 	}
 	else if(lcdcon.id==0X6804)
 	{
-
+		if(lcdcon.dir==1)					//landscape
+			XPOS=lcdcon.width-1-XPOS;
+		LCD_W_REGNUM(lcdcon.setxcmd);
+		LCD_W_DAT(XPOS>>8);
+		LCD_W_DAT(XPOS&&0XFF);
+		LCD_W_REGNUM(lcdcon.setycmd);
+		LCD_W_DAT(YPOS>>8);
+		LCD_W_DAT(YPOS&0XFF);
+	}
+	else if(lcdcon.id==0X5510)
+	{
+		LCD_W_REGNUM(lcdcon.setxcmd);
+		LCD_W_DAT(XPOS>>8);
+		LCD_W_REGNUM(lcdcon.setxcmd+1);
+		LCD_W_DAT(XPOS&&0XFF);
+		LCD_W_REGNUM(lcdcon.setycmd);
+		LCD_W_DAT(YPOS>>8);
+		LCD_W_REGNUM(lcdcon.setycmd+1);
+		LCD_W_DAT(YPOS&0XFF);
+	}
+	else
+	{
+		if(lcdcon.dir==1)
+			XPOS=lcdcon.width-1-XPOS;
+		LCD_W_REG(lcdcon.setxcmd,XPOS);
+		LCD_W_REG(lcdcon.setycmd,YPOS);
 	}
 }
 /*End Set Cursor*/
