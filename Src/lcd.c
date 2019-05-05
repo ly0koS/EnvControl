@@ -69,36 +69,36 @@ void LCD_W_GRAM(u16 RGB_Code)
 /*Begin Set Cursor*/
 void LCD_SetCursor(u16 XPOS,u16 YPOS)
 {
-	if(lcdcon.id==0x9241||lcdcon.id==0x5310)
+	if(lcdcon.id==0X9241||lcdcon.id==0X5310)
 	{
 		LCD_W_REGNUM(lcdcon.setxcmd);
 		LCD_W_DAT(XPOS>>8);
-		LCD_W_DAT(XPOS&0xFF);
+		LCD_W_DAT(XPOS&0XFF);
 		LCD_W_REGNUM(lcdcon.setycmd);
 		LCD_W_DAT(YPOS>>8);
-		LCD_W_DAT(YPOS&0xFF);
+		LCD_W_DAT(YPOS&0XFF);
 	}
-	else if(lcdcon.id==0x6804)
+	else if(lcdcon.id==0X6804)
 	{
 		if(lcdcon.dir==1)					//landscape
 			XPOS=lcdcon.width-1-XPOS;
 		LCD_W_REGNUM(lcdcon.setxcmd);
 		LCD_W_DAT(XPOS>>8);
-		LCD_W_DAT(XPOS&&0xFF);
+		LCD_W_DAT(XPOS&&0XFF);
 		LCD_W_REGNUM(lcdcon.setycmd);
 		LCD_W_DAT(YPOS>>8);
-		LCD_W_DAT(YPOS&0xFF);
+		LCD_W_DAT(YPOS&0XFF);
 	}
-	else if(lcdcon.id==0x5510)
+	else if(lcdcon.id==0X5510)
 	{
 		LCD_W_REGNUM(lcdcon.setxcmd);
 		LCD_W_DAT(XPOS>>8);
 		LCD_W_REGNUM(lcdcon.setxcmd+1);
-		LCD_W_DAT(XPOS&&0xFF);
+		LCD_W_DAT(XPOS&&0XFF);
 		LCD_W_REGNUM(lcdcon.setycmd);
 		LCD_W_DAT(YPOS>>8);
 		LCD_W_REGNUM(lcdcon.setycmd+1);
-		LCD_W_DAT(YPOS&0xFF);
+		LCD_W_DAT(YPOS&0XFF);
 	}
 	else
 	{
