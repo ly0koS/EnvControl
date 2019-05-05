@@ -53,7 +53,7 @@ u16 LCD_R_REG(vu16 LCD_REG_NUM)
 /*End Read Register Data*/
 
 /*Begin Preparation For Writing GRAM*/
-void LCD_W_RRAM_Prepare()
+void LCD_W_GRAM_Prepare()
 {
 	LCD->LCD_REG=lcdcon.warmcmd;
 }
@@ -69,36 +69,36 @@ void LCD_W_GRAM(u16 RGB_Code)
 /*Begin Set Cursor*/
 void LCD_SetCursor(u16 XPOS,u16 YPOS)
 {
-	if(lcdcon.id==0X9241||lcdcon.id==0X5310)
+	if(lcdcon.id==0x9241||lcdcon.id==0x5310)
 	{
 		LCD_W_REGNUM(lcdcon.setxcmd);
 		LCD_W_DAT(XPOS>>8);
-		LCD_W_DAT(XPOS&0XFF);
+		LCD_W_DAT(XPOS&0xFF);
 		LCD_W_REGNUM(lcdcon.setycmd);
 		LCD_W_DAT(YPOS>>8);
-		LCD_W_DAT(YPOS&0XFF);
+		LCD_W_DAT(YPOS&0xFF);
 	}
-	else if(lcdcon.id==0X6804)
+	else if(lcdcon.id==0x6804)
 	{
 		if(lcdcon.dir==1)					//landscape
 			XPOS=lcdcon.width-1-XPOS;
 		LCD_W_REGNUM(lcdcon.setxcmd);
 		LCD_W_DAT(XPOS>>8);
-		LCD_W_DAT(XPOS&&0XFF);
+		LCD_W_DAT(XPOS&&0xFF);
 		LCD_W_REGNUM(lcdcon.setycmd);
 		LCD_W_DAT(YPOS>>8);
-		LCD_W_DAT(YPOS&0XFF);
+		LCD_W_DAT(YPOS&0xFF);
 	}
-	else if(lcdcon.id==0X5510)
+	else if(lcdcon.id==0x5510)
 	{
 		LCD_W_REGNUM(lcdcon.setxcmd);
 		LCD_W_DAT(XPOS>>8);
 		LCD_W_REGNUM(lcdcon.setxcmd+1);
-		LCD_W_DAT(XPOS&&0XFF);
+		LCD_W_DAT(XPOS&&0xFF);
 		LCD_W_REGNUM(lcdcon.setycmd);
 		LCD_W_DAT(YPOS>>8);
 		LCD_W_REGNUM(lcdcon.setycmd+1);
-		LCD_W_DAT(YPOS&0XFF);
+		LCD_W_DAT(YPOS&0xFF);
 	}
 	else
 	{
@@ -109,4 +109,14 @@ void LCD_SetCursor(u16 XPOS,u16 YPOS)
 	}
 }
 /*End Set Cursor*/
+
+/*Begin DrawPoint*/
+void LCD_DrawPoint(u16 x,u16 y,u16 point_color)
+{
+	LCD_SetCursor(x,y);
+	LCD_W_GRAM_Prepare();
+	LCD->LCD_RAM=point_color;
+}
+/*End DrawPoint*/
+
 /*End Custom Function*/
