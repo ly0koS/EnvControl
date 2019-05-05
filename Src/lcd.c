@@ -53,7 +53,7 @@ u16 LCD_R_REG(vu16 LCD_REG_NUM)
 /*End Read Register Data*/
 
 /*Begin Preparation For Writing GRAM*/
-void LCD_W_GRAM_Prepare()
+void LCD_W_RRAM_Prepare()
 {
 	LCD->LCD_REG=lcdcon.warmcmd;
 }
@@ -109,14 +109,4 @@ void LCD_SetCursor(u16 XPOS,u16 YPOS)
 	}
 }
 /*End Set Cursor*/
-
-/*Begin DrawPoint*/
-void LCD_DrawPoint(u16 x,u16 y,u16 point_color)
-{
-	LCD_SetCursor(x,y);
-	LCD_W_GRAM_Prepare();
-	LCD->LCD_RAM=point_color;
-}
-/*End DrawPoint*/
-
 /*End Custom Function*/
