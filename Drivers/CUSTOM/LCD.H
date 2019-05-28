@@ -9,6 +9,7 @@
 #define CUSTOM_LCD_H_
 #include "stm32f4xx_hal.h"
 #include "stdlib.h"
+#include "FONT.H"
 /*Begin Variable typedef*/
 typedef uint32_t  u32;
 typedef uint16_t u16;
