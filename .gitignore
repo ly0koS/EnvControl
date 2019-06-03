@@ -83,3 +83,4 @@ PROJECT_PROJ.XSD
 bash.exe.stackdump
 /Debug/
 .settings/language.settings.xml
+/.cproject
