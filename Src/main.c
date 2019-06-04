@@ -33,7 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+uint8_t temperture;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -110,7 +110,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  HAL_I2C_Master_Receive(hi2c1,0xa0,(uint8_t *)temperture,sizeof(temperture),10000);   //修改从机地址
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
