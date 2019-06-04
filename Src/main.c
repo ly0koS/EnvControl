@@ -114,7 +114,7 @@ int main(void)
     /* USER CODE END WHILE */
 	  HAL_I2C_Master_Receive(hi2c1,0xa0,(uint8_t *)temperture,sizeof(temperture),10000);   //修改从机地址
 	  HAL_I2C_Master_Receive(hi2c1,0xa0,(uint8_t *)co2,sizeof(co2),10000);
-	  HAL_I2C_Master_Receive(hi2c1,0xa0,(uint8_t *)light,sizeof(light),10000);
+	  HAL_I2C_Master_Receive(hi2c1,0x46,(uint8_t *)light,sizeof(light),10000);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
