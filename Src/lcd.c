@@ -120,3 +120,42 @@ void LCD_DrawPoint(u16 x,u16 y,u16 point_color)
 /*End DrawPoint*/
 
 /*End Custom Function*/
+void LCD_Fast_DrawPoint(u16 x,u16 y,u16 color)
+{
+	if(lcdcon.id==0X9341||lcdcon.id==0X5310)
+	{
+		LCD_W_REGNUM(lcdcon.setxcmd);
+		LCD_W_DAT(x>>8);LCD_W_DAT(x&0XFF);
+		LCD_W_REGNUM(lcdcon.setycmd);
+		LCD_W_DAT(y>>8);LCD_W_DAT(y&0XFF);
+	}else if(lcdcon.id==0X5510)
+	{
+		LCD_W_REGNUM(lcdcon.setxcmd);LCD_W_DAT(x>>8);
+		LCD_W_REGNUM(lcdcon.setxcmd+1);LCD_W_DAT(x&0XFF);
+		LCD_W_REGNUM(lcdcon.setycmd);LCD_W_DAT(y>>8);
+		LCD_W_REGNUM(lcdcon.setycmd+1);LCD_W_DAT(y&0XFF);
+	}else if(lcdcon.id==0X1963)
+	{
+		if(lcdcon.dir==0)x=lcdcon.width-1-x;
+		LCD_W_REGNUM(lcdcon.setxcmd);
+		LCD_W_DAT(x>>8);LCD_W_DAT(x&0XFF);
+		LCD_W_DAT(x>>8);LCD_W_DAT(x&0XFF);
+		LCD_W_REGNUM(lcdcon.setycmd);
+		LCD_W_DAT(y>>8);LCD_W_DAT(y&0XFF);
+		LCD_W_DAT(y>>8);LCD_W_DAT(y&0XFF);
+	}else if(lcdcon.id==0X6804)
+	{
+		if(lcdcon.dir==1)x=lcdcon.width-1-x;//横屏时处理
+		LCD_W_REGNUM(lcdcon.setxcmd);
+		LCD_W_DAT(x>>8);LCD_W_DAT(x&0XFF);
+		LCD_W_REGNUM(lcdcon.setycmd);
+		LCD_W_DAT(y>>8);LCD_W_DAT(y&0XFF);
+	}else
+	{
+ 		if(lcdcon.dir==1)x=lcdcon.width-1-x;//横屏其实就是调转x,y坐标
+		LCD_W_REG(lcdcon.setxcmd,x);
+		LCD_W_REG(lcdcon.setycmd,y);
+	}
+	LCD->LCD_REG=lcdcon.warmcmd;
+	LCD->LCD_RAM=color;
+}
