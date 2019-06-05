@@ -159,3 +159,13 @@ void LCD_Fast_DrawPoint(u16 x,u16 y,u16 color)
 	LCD->LCD_REG=lcdcon.warmcmd;
 	LCD->LCD_RAM=color;
 }
+void LCD_SSD_BackLightSet(u8 pwm)
+{
+	LCD_W_REGNUM(0xBE);	//配置PWM输出
+	LCD_W_DAT(0x05);	//1设置PWM频率
+	LCD_W_DAT(pwm*2.55);//2设置PWM占空比
+	LCD_W_DAT(0x01);	//3设置C
+	LCD_W_DAT(0xFF);	//4设置D
+	LCD_W_DAT(0x00);	//5设置E
+	LCD_W_DAT(0x00);	//6设置F
+}
