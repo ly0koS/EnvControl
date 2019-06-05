@@ -36,6 +36,8 @@
 uint8_t temperture;
 uint8_t co2;
 uint8_t light;
+uint8_t AHT10_CalibrateCmd[3]={0xE1, 0x08, 0x00};
+uint8_t AHT10_MeasureCmd[3]={0xAC, 0x33, 0x00};
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/

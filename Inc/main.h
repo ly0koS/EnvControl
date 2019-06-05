@@ -47,9 +47,9 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-uint8_t AHT10_Address=0x38;
-uint8_t AHT10_CalibrateCmd[3]={0xE1, 0x08, 0x00};
-uint8_t AHT10_MeasureCmd[3]={0xAC, 0x33, 0x00};
+uint8_t AHT10_CalibrateCmd[3];
+uint8_t AHT10_MeasureCmd[3];
+uint8_t AHT10_Data[6];
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
@@ -61,6 +61,7 @@ void Error_Handler(void);
 
 /* Private defines -----------------------------------------------------------*/
 /* USER CODE BEGIN Private defines */
+#define AHT10_Address 0x38
 #define I2C2_SDA_Pin GPIO_PIN_0
 #define I2C2_SDA_GPIO_Port GPIOF
 #define I2C2_SCL_Pin GPIO_PIN_1
@@ -114,7 +115,15 @@ void Error_Handler(void);
 #define I2C1_SDA_Pin GPIO_PIN_7
 #define I2C1_SDA_GPIO_Port GPIOB
 /* USER CODE END Private defines */
+/*USER CODE Begin Private Variables*/
+I2C_HandleTypeDef hi2c1;
+I2C_HandleTypeDef hi2c2;
+I2C_HandleTypeDef hi2c3;
 
+TIM_HandleTypeDef htim1;
+TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim3;
+/*USER CODE End Private Variables*/
 #ifdef __cplusplus
 }
 #endif

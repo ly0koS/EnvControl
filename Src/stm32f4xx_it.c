@@ -37,7 +37,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+uint8_t i,j;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -209,7 +209,12 @@ void TIM1_UP_TIM10_IRQHandler(void)
   /* USER CODE END TIM1_UP_TIM10_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 1 */
-
+  for(i=0;i<3;i++)
+  {
+	  HAL_I2C_Master_Transmit(&hi2c1,AHT10_Address,&AHT10_MeasureCmd[i],sizeof(AHT10_MeasureCmd[i]),10000);		//发送获取数值指令
+  }
+  HAL_Delay(1000);
+  HAL_I2C_Master_Receive(&hi2c1,AHT10_Address,&AHT10_Data,sizeof(AHT10_Data),10000);
   /* USER CODE END TIM1_UP_TIM10_IRQn 1 */
 }
 
