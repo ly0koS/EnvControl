@@ -32,6 +32,28 @@ typedef __IO uint8_t  vu8;
 
 #define DFT_SCAN_DIR  L2R_U2D 	//Default Scan Direction
 /*END Scan Direction*/
+/*颜色声明开始*/
+//画笔颜色
+#define WHITE         	 0xFFFF
+#define BLACK         	 0x0000
+#define BLUE         	 0x001F
+#define BRED             0XF81F
+#define GRED 			 0XFFE0
+#define GBLUE			 0X07FF
+#define RED           	 0xF800
+#define MAGENTA       	 0xF81F
+#define GREEN         	 0x07E0
+#define CYAN          	 0x7FFF
+#define YELLOW        	 0xFFE0
+#define BROWN 			 0XBC40 //棕色
+#define BRRED 			 0XFC07 //棕红色
+#define GRAY  			 0X8430 //灰色
+//GUI颜色
+
+#define DARKBLUE      	 0X01CF	//深蓝色
+#define LIGHTBLUE      	 0X7D7C	//浅蓝色
+#define GRAYBLUE       	 0X5458 //灰蓝色
+/*颜色声明结束*/
 
 /*Begin RS Control*/
 typedef struct
@@ -59,7 +81,16 @@ typedef struct
 }_lcd_control;
 
 extern _lcd_control lcdcon;
-
-
+/*自定义开始*/
+void LCD_W_REGNUM(vu16 regvalue);
+void LCD_W_REG(vu16 LCD_REG_NUM,vu16 LCD_REG_VAL);
+void LCD_W_DAT(vu16 data);
+u16 LCD_R_DAT();
+u16 LCD_R_REG(vu16 LCD_REG_NUM);
+void LCD_W_GRAM_Prepare();
+void LCD_W_GRAM(u16 RGB_Code);
+void LCD_SetCursor(u16 XPOS,u16 YPOS);
+void LCD_DrawPoint(u16 x,u16 y,u16 point_color);
+/*自定义结束*/
 
 #endif /* CUSTOM_LCD_H_ */
