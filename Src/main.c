@@ -39,6 +39,8 @@ uint8_t co2;
 uint8_t light;
 uint8_t AHT10_CalibrateCmd[3]={0xE1, 0x08, 0x00};
 uint8_t AHT10_MeasureCmd[3]={0xAC, 0x33, 0x00};
+uint8_t GY30_POWERON=0x01;
+uint8_t GY30_CHRM=0x10;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -240,7 +242,8 @@ static void MX_I2C2_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C2_Init 2 */
-
+  HAL_I2C_Master_Transmit(&hi2c1, GY30_address,&GY30_POWERON, sizeof(GY30_POWERON),10000);
+  HAL_I2C_Master_Transmit(&hi2c1, GY30_address,&GY30_CHRM, sizeof(GY30_CHRM),10000);
   /* USER CODE END I2C2_Init 2 */
 
 }
