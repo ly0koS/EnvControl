@@ -207,7 +207,7 @@ static void MX_I2C1_Init(void)
   /* USER CODE BEGIN I2C1_Init 2 */
   for(i=0;i<3;i++)
   {
-	  HAL_I2C_Master_Transmit(&hi2c1, AHT10_address,&AHT10_CalibrateCmd[i], sizeof(AHT10_CalibrateCmd[i]),10000);
+	  HAL_I2C_Master_Transmit(&hi2c1, AHT10_Address,&AHT10_CalibrateCmd[i], sizeof(AHT10_CalibrateCmd[i]),10000);
   }
   /* USER CODE END I2C1_Init 2 */
 
@@ -242,8 +242,8 @@ static void MX_I2C2_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C2_Init 2 */
-  HAL_I2C_Master_Transmit(&hi2c1, GY30_address,&GY30_POWERON, sizeof(GY30_POWERON),10000);
-  HAL_I2C_Master_Transmit(&hi2c1, GY30_address,&GY30_CHRM, sizeof(GY30_CHRM),10000);
+  HAL_I2C_Master_Transmit(&hi2c1, GY30_Address,&GY30_POWERON, sizeof(GY30_POWERON),10000);
+  HAL_I2C_Master_Transmit(&hi2c1, GY30_Address,&GY30_CHRM, sizeof(GY30_CHRM),10000);
   /* USER CODE END I2C2_Init 2 */
 
 }
