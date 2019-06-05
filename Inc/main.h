@@ -47,7 +47,9 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-
+uint8_t AHT10_Address=0x38;
+uint8_t AHT10_CalibrateCmd[3]={0xE1, 0x08, 0x00};
+uint8_t AHT10_MeasureCmd[3]={0xAC, 0x33, 0x00};
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
@@ -58,6 +60,7 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+/* USER CODE BEGIN Private defines */
 #define I2C2_SDA_Pin GPIO_PIN_0
 #define I2C2_SDA_GPIO_Port GPIOF
 #define I2C2_SCL_Pin GPIO_PIN_1
@@ -110,8 +113,6 @@ void Error_Handler(void);
 #define I2C1_SCL_GPIO_Port GPIOB
 #define I2C1_SDA_Pin GPIO_PIN_7
 #define I2C1_SDA_GPIO_Port GPIOB
-/* USER CODE BEGIN Private defines */
-
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
