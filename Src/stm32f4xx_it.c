@@ -212,8 +212,12 @@ void TIM1_UP_TIM10_IRQHandler(void)
   {
 	  HAL_I2C_Master_Transmit(&hi2c1,AHT10_Address,&AHT10_MeasureCmd[i],sizeof(AHT10_MeasureCmd[i]),10000);		//发送获取数值指令
   }
-  HAL_Delay(1000);
+  Delay(1000);
   HAL_I2C_Master_Receive(&hi2c1,AHT10_Address,&AHT10_Data,sizeof(AHT10_Data),10000);
+  temperture=((AHT10_Data[1] << 16) | (AHT10_Data[2] << 8) | AHT10_Data[3]) >> 4;
+  temperture=temperture * 100 / 1048576;
+  RH=((AHT10_Data[3] & 0x0F) << 16) | (AHT10_Data[4] << 8) | AHT10_Data[5];
+  RH=((200 * RH) / 1048576) - 50;
 
   /* USER CODE END TIM1_UP_TIM10_IRQn 1 */
 }
@@ -228,7 +232,10 @@ void TIM2_IRQHandler(void)
   /* USER CODE END TIM2_IRQn 0 */
   HAL_TIM_IRQHandler(&htim2);
   /* USER CODE BEGIN TIM2_IRQn 1 */
+  for(i=0;i<3;i++)
+  {
 
+  }
   /* USER CODE END TIM2_IRQn 1 */
 }
 

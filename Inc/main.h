@@ -50,6 +50,7 @@ extern "C" {
 uint8_t AHT10_CalibrateCmd[3];
 uint8_t AHT10_MeasureCmd[3];
 uint8_t AHT10_Data[6];
+uint8_t GY30_Data[];
 uint8_t temperture;
 uint8_t RH;
 uint8_t co2;
@@ -67,6 +68,7 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 /* USER CODE BEGIN Private defines */
 #define AHT10_Address 0x38
+#define GY30_Address 0x46
 #define I2C2_SDA_Pin GPIO_PIN_0
 #define I2C2_SDA_GPIO_Port GPIOF
 #define I2C2_SCL_Pin GPIO_PIN_1
