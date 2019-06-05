@@ -203,7 +203,10 @@ static void MX_I2C1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C1_Init 2 */
-
+  for(i=0;i<3;i++)
+  {
+	  HAL_I2C_Master_Transmit(&hi2c1, AHT10_address,&AHT10_CalibrateCmd[i], sizeof(AHT10_CalibrateCmd[i]),10000);
+  }
   /* USER CODE END I2C1_Init 2 */
 
 }
