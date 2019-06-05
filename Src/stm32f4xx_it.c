@@ -37,7 +37,6 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-uint8_t i,j;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -215,6 +214,7 @@ void TIM1_UP_TIM10_IRQHandler(void)
   }
   HAL_Delay(1000);
   HAL_I2C_Master_Receive(&hi2c1,AHT10_Address,&AHT10_Data,sizeof(AHT10_Data),10000);
+
   /* USER CODE END TIM1_UP_TIM10_IRQn 1 */
 }
 

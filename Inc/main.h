@@ -50,6 +50,11 @@ extern "C" {
 uint8_t AHT10_CalibrateCmd[3];
 uint8_t AHT10_MeasureCmd[3];
 uint8_t AHT10_Data[6];
+uint8_t temperture;
+uint8_t RH;
+uint8_t co2;
+uint8_t light;
+uint8_t i,j;
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
