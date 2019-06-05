@@ -234,8 +234,10 @@ void TIM2_IRQHandler(void)
   /* USER CODE BEGIN TIM2_IRQn 1 */
   for(i=0;i<3;i++)
   {
-
+	  HAL_I2C_Master_Receive(&hi2c2,GY30_Address,&GY30_Data[i],sizeof(GY30_Data[i]),10000);
   }
+  light=GY30_Data[0];
+  light=(light<<8)+GY30_Data[1];
   /* USER CODE END TIM2_IRQn 1 */
 }
 

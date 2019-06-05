@@ -50,7 +50,7 @@ extern "C" {
 uint8_t AHT10_CalibrateCmd[3];
 uint8_t AHT10_MeasureCmd[3];
 uint8_t AHT10_Data[6];
-uint8_t GY30_Data[];
+uint8_t GY30_Data[3];
 uint8_t temperture;
 uint8_t RH;
 uint8_t co2;
