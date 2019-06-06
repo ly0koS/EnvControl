@@ -53,9 +53,10 @@ uint8_t AHT10_Data[6];
 uint8_t GY30_Data[3];
 uint16_t SGP30_init=0x2003;
 uint16_t SGP30_measure=0x2008;
+uint32_t SGP30_Data;
 uint8_t temperture;
 uint8_t RH;
-uint8_t co2;
+uint8_t co2=0x00;
 uint8_t light;
 uint8_t i,j=0;
 /* USER CODE END EM */
