@@ -98,7 +98,7 @@ int main(void)
   MX_ADC1_Init();
   MX_FSMC_Init();
   /* USER CODE BEGIN 2 */
-
+  LCD_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -106,8 +106,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  POINT_COLOR=RED;
-	  LCD_DisplayString(30,110,200,16,16,lcd_id);		//显示LCD ID
+	POINT_COLOR=RED;
+	LCD_DisplayString(30,110,200,16,16,lcd_id);		//显示LCD ID
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -208,13 +208,25 @@ static void MX_ADC1_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOE_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
-  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000000);	//interrupt at 1us -> HAL_Delay base at 1us
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_15, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : PB15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
 }
 
 /* FSMC initialization function */

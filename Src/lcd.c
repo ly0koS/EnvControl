@@ -460,9 +460,9 @@ void LCD_Set_Window(u16 sx,u16 sy,u16 width,u16 height)
 void LCD_Init(void)
 {
 	vu32 i=0;
- 	delay_ms(50); // delay 50 ms
+ 	HAL_Delay(50); // delay 50 ms
  	LCD_W_REG(0x0000,0x0001);
-	delay_ms(50); // delay 50 ms
+	HAL_Delay(50); // delay 50 ms
   	lcdcon.id = LCD_R_REG(0x0000);
    	if(lcdcon.id<0XFF||lcdcon.id==0XFFFF||lcdcon.id==0X9300)//读到ID不正确,新增lcdcon.id==0X9300判断，因为9341在未被复位的情况下会被读成9300
 	{
@@ -621,12 +621,12 @@ void LCD_Init(void)
 		LCD_W_DAT(0x00);
 		LCD_W_DAT(0xef);
 		LCD_W_REGNUM(0x11); //Exit Sleep
-		delay_ms(120);
+		HAL_Delay(120);
 		LCD_W_REGNUM(0x29); //display on
 	}else if(lcdcon.id==0x6804) //6804初始化
 	{
 		LCD_W_REGNUM(0X11);
-		delay_ms(20);
+		HAL_Delay(20);
 		LCD_W_REGNUM(0XD0);//VCI1  VCL  VGH  VGL DDVDH VREG1OUT power amplitude setting
 		LCD_W_DAT(0X07);
 		LCD_W_DAT(0X42);
@@ -687,7 +687,7 @@ void LCD_Init(void)
 		LCD_W_DAT(0X00);
 		LCD_W_DAT(0X01);
 		LCD_W_DAT(0XDF);
-		delay_ms(120);
+		HAL_Delay(120);
 		LCD_W_REGNUM(0X29);
  	}else if(lcdcon.id==0x5310)
 	{
@@ -1356,7 +1356,7 @@ void LCD_Init(void)
 		LCD_W_DAT(0x55);	//66
 
 		LCD_W_REGNUM(0x11);
-		delay_ms(100);
+		HAL_Delay(100);
 		LCD_W_REGNUM(0x29);
 		LCD_W_REGNUM(0x35);
 		LCD_W_DAT(0x00);
@@ -1878,19 +1878,19 @@ void LCD_Init(void)
         LCD_W_REG(0x0012,0x0000);
         LCD_W_REG(0x0013,0x0000);
      	LCD_W_REG(0x0007,0x0001);
-       	delay_ms(50);
+       	HAL_Delay(50);
         LCD_W_REG(0x0010,0x1490);
         LCD_W_REG(0x0011,0x0227);
-        delay_ms(50);
+        HAL_Delay(50);
         LCD_W_REG(0x0012,0x008A);
-        delay_ms(50);
+        HAL_Delay(50);
         LCD_W_REG(0x0013,0x1a00);
         LCD_W_REG(0x0029,0x0006);
         LCD_W_REG(0x002b,0x000d);
-        delay_ms(50);
+        HAL_Delay(50);
         LCD_W_REG(0x0020,0x0000);
         LCD_W_REG(0x0021,0x0000);
-		delay_ms(50);
+		HAL_Delay(50);
 		//伽马校正
         LCD_W_REG(0x0030,0x0000);
         LCD_W_REG(0x0031,0x0604);
@@ -1902,7 +1902,7 @@ void LCD_Init(void)
         LCD_W_REG(0x0039,0x0707);
         LCD_W_REG(0x003c,0x0000);
         LCD_W_REG(0x003d,0x0a0a);
-        delay_ms(50);
+        HAL_Delay(50);
         LCD_W_REG(0x0050,0x0000); //水平GRAM起始位置
         LCD_W_REG(0x0051,0x00ef); //水平GRAM终止位置
         LCD_W_REG(0x0052,0x0000); //垂直GRAM起始位置
@@ -1937,9 +1937,9 @@ void LCD_Init(void)
 		LCD_W_REG(0x0c,(1<<0));	//Extern Display Interface Contral 1.(0x0000)
 		LCD_W_REG(0x0d,0x0000);	//Frame Maker Position.
 		LCD_W_REG(0x0f,0x0000);	//Extern Display Interface Contral 2.
-		delay_ms(50);
+		HAL_Delay(50);
 		LCD_W_REG(0x07,0x0101);	//Display Contral.
-		delay_ms(50);
+		HAL_Delay(50);
 		LCD_W_REG(0x10,(1<<12)|(0<<8)|(1<<7)|(1<<6)|(0<<4));	//Power Control 1.(0x16b0)
 		LCD_W_REG(0x11,0x0007);								//Power Control 2.(0x0001)
 		LCD_W_REG(0x12,(1<<8)|(1<<4)|(0<<0));				//Power Control 3.(0x0138)
@@ -1989,16 +1989,16 @@ void LCD_Init(void)
 		LCD_W_REG(0x0011, 0x0007); // DC1[2:0], DC0[2:0], VC[2:0]
 		LCD_W_REG(0x0012, 0x0000); // VREG1OUT voltage
 		LCD_W_REG(0x0013, 0x0000); // VDV[4:0] for VCOM amplitude
-		delay_ms(200); // Dis-charge capacitor power voltage
+		HAL_Delay(200); // Dis-charge capacitor power voltage
 		LCD_W_REG(0x0010, 0x1690); // SAP, BT[3:0], AP, DSTB, SLP, STB
 		LCD_W_REG(0x0011, 0x0227); // DC1[2:0], DC0[2:0], VC[2:0]
-		delay_ms(50); // Delay 50ms
+		HAL_Delay(50); // Delay 50ms
 		LCD_W_REG(0x0012, 0x000C); // Internal reference voltage= Vci;
-		delay_ms(50); // Delay 50ms
+		HAL_Delay(50); // Delay 50ms
 		LCD_W_REG(0x0013, 0x0800); // Set VDV[4:0] for VCOM amplitude
 		LCD_W_REG(0x0029, 0x0011); // Set VCM[5:0] for VCOMH
 		LCD_W_REG(0x002B, 0x000B); // Set Frame Rate
-		delay_ms(50); // Delay 50ms
+		HAL_Delay(50); // Delay 50ms
 		LCD_W_REG(0x0020, 0x0000); // GRAM horizontal Address
 		LCD_W_REG(0x0021, 0x013f); // GRAM Vertical Address
 		// ----------- Adjust the Gamma Curve ----------//
@@ -2047,7 +2047,7 @@ void LCD_Init(void)
 		LCD_W_REG(0x0C,0x0000); //External Display Interface Control 1
 		LCD_W_REG(0x0D,0x0000); //Frame Maker Position
 		LCD_W_REG(0x0F,0x0000); //External Display Interface Control 2
- 		delay_ms(20);
+ 		HAL_Delay(20);
 		//TFT 液晶彩色图像显示方法14
 		LCD_W_REG(0x10,0x16B0); //0x14B0 //Power Control 1
 		LCD_W_REG(0x11,0x0001); //0x0007 //Power Control 2
@@ -2076,13 +2076,13 @@ void LCD_Init(void)
 		LCD_W_REG(0x93,0x0003); //Panel Interface control 3
 		LCD_W_REG(0x95,0x0110);  //Frame Cycle Control
 		LCD_W_REG(0x07,0x0173);
-		delay_ms(50);
+		HAL_Delay(50);
 	}
 	else if(lcdcon.id==0x1505)//OK
 	{
 		// second release on 3/5  ,luminance is acceptable,water wave appear during camera preview
         LCD_W_REG(0x0007,0x0000);
-        delay_ms(50);
+        HAL_Delay(50);
         LCD_W_REG(0x0012,0x011C);//0x011A   why need to set several times?
         LCD_W_REG(0x00A4,0x0001);//NVM
         LCD_W_REG(0x0008,0x000F);
@@ -2103,10 +2103,10 @@ void LCD_Init(void)
         LCD_W_REG(0x003B,0x0000); //0x0303
         LCD_W_REG(0x003C,0x0007); //?0x0707
         LCD_W_REG(0x003D,0x0000); //0x1313//0x1f08
-        delay_ms(50);
+        HAL_Delay(50);
         LCD_W_REG(0x0007,0x0001);
         LCD_W_REG(0x0017,0x0001);//开启电源
-        delay_ms(50);
+        HAL_Delay(50);
   		//电源配置
         LCD_W_REG(0x0010,0x17A0);
         LCD_W_REG(0x0011,0x0217);//reference voltage VC[2:0]   Vciout = 1.00*Vcivl
@@ -2148,11 +2148,11 @@ void LCD_Init(void)
         LCD_W_REG(0x0020,0x0000);
         LCD_W_REG(0x0021,0x0000);
         LCD_W_REG(0x0007,0x0021);
-        delay_ms(20);
+        HAL_Delay(20);
         LCD_W_REG(0x0007,0x0061);
-        delay_ms(20);
+        HAL_Delay(20);
         LCD_W_REG(0x0007,0x0173);
-        delay_ms(20);
+        HAL_Delay(20);
 	}else if(lcdcon.id==0xB505)
 	{
 		LCD_W_REG(0x0000,0x0000);
@@ -2161,7 +2161,7 @@ void LCD_Init(void)
 		LCD_W_REG(0x0000,0x0000);
 
 		LCD_W_REG(0x00a4,0x0001);
-		delay_ms(20);
+		HAL_Delay(20);
 		LCD_W_REG(0x0060,0x2700);
 		LCD_W_REG(0x0008,0x0202);
 
@@ -2181,19 +2181,19 @@ void LCD_Init(void)
 		LCD_W_REG(0x0011,0x0007);
 		LCD_W_REG(0x0012,0x0000);
 		LCD_W_REG(0x0013,0x0000);
-		delay_ms(20);
+		HAL_Delay(20);
 
 		LCD_W_REG(0x0010,0x0730);
 		LCD_W_REG(0x0011,0x0137);
-		delay_ms(20);
+		HAL_Delay(20);
 
 		LCD_W_REG(0x0012,0x01b8);
-		delay_ms(20);
+		HAL_Delay(20);
 
 		LCD_W_REG(0x0013,0x0f00);
 		LCD_W_REG(0x002a,0x0080);
 		LCD_W_REG(0x0029,0x0048);
-		delay_ms(20);
+		HAL_Delay(20);
 
 		LCD_W_REG(0x0001,0x0100);
 		LCD_W_REG(0x0002,0x0700);
@@ -2216,10 +2216,10 @@ void LCD_Init(void)
 		LCD_W_REG(0x0092,0x0600);
 		LCD_W_REG(0x0093,0x0402);
 		LCD_W_REG(0x0094,0x0002);
-		delay_ms(20);
+		HAL_Delay(20);
 
 		LCD_W_REG(0x0007,0x0001);
-		delay_ms(20);
+		HAL_Delay(20);
 		LCD_W_REG(0x0007,0x0061);
 		LCD_W_REG(0x0007,0x0173);
 
@@ -2230,13 +2230,13 @@ void LCD_Init(void)
 	{
 		LCD_W_REG(0x0000,0x0000);
 		LCD_W_REG(0x0000,0x0000);
-		delay_ms(20);
+		HAL_Delay(20);
 		LCD_W_REG(0x0000,0x0000);
 		LCD_W_REG(0x0000,0x0000);
 		LCD_W_REG(0x0000,0x0000);
 		LCD_W_REG(0x0000,0x0000);
  		LCD_W_REG(0x00a4,0x0001);
-		delay_ms(20);
+		HAL_Delay(20);
 		LCD_W_REG(0x0060,0x2700);
 		LCD_W_REG(0x0008,0x0806);
 
@@ -2258,7 +2258,7 @@ void LCD_Init(void)
 		LCD_W_REG(0x0011,0x0247);	//DC1,DC0,VC
 		LCD_W_REG(0x0012, 0x01BC);
 		LCD_W_REG(0x0013, 0x0e00);
-		delay_ms(120);
+		HAL_Delay(120);
 		LCD_W_REG(0x0001, 0x0100);
 		LCD_W_REG(0x0002, 0x0200);
 		LCD_W_REG(0x0003, 0x1030);
@@ -2271,7 +2271,7 @@ void LCD_Init(void)
 		LCD_W_REG(0x0020, 0x0000);	//H Start
 		LCD_W_REG(0x0021, 0x0000);	//V Start
 		LCD_W_REG(0x002A,0x003D);	//vcom2
-		delay_ms(20);
+		HAL_Delay(20);
 		LCD_W_REG(0x0029, 0x002d);
 		LCD_W_REG(0x0050, 0x0000);
 		LCD_W_REG(0x0051, 0xD0EF);
@@ -2286,19 +2286,19 @@ void LCD_Init(void)
 	}else if(lcdcon.id==0x4531)//OK |/|/|
 	{
 		LCD_W_REG(0X00,0X0001);
-		delay_ms(10);
+		HAL_Delay(10);
 		LCD_W_REG(0X10,0X1628);
 		LCD_W_REG(0X12,0X000e);//0x0006
 		LCD_W_REG(0X13,0X0A39);
-		delay_ms(10);
+		HAL_Delay(10);
 		LCD_W_REG(0X11,0X0040);
 		LCD_W_REG(0X15,0X0050);
-		delay_ms(10);
+		HAL_Delay(10);
 		LCD_W_REG(0X12,0X001e);//16
-		delay_ms(10);
+		HAL_Delay(10);
 		LCD_W_REG(0X10,0X1620);
 		LCD_W_REG(0X13,0X2A39);
-		delay_ms(10);
+		HAL_Delay(10);
 		LCD_W_REG(0X01,0X0100);
 		LCD_W_REG(0X02,0X0300);
 		LCD_W_REG(0X03,0X1038);//改变方向的
@@ -2335,12 +2335,12 @@ void LCD_Init(void)
  		LCD_W_REG(0X10,0X3428);
 		LCD_W_REG(0X12,0X0002);//16
  		LCD_W_REG(0X13,0X1038);
-		delay_ms(40);
+		HAL_Delay(40);
 		LCD_W_REG(0X12,0X0012);//16
-		delay_ms(40);
+		HAL_Delay(40);
   		LCD_W_REG(0X10,0X3420);
  		LCD_W_REG(0X13,0X3038);
-		delay_ms(70);
+		HAL_Delay(70);
 		LCD_W_REG(0X30,0X0000);
 		LCD_W_REG(0X31,0X0402);
 		LCD_W_REG(0X32,0X0307);
@@ -2378,12 +2378,12 @@ void LCD_Init(void)
 		HAL_Delay(100);
 		LCD_W_REGNUM(0xE0);		// Start PLL command
 		LCD_W_DAT(0x01);		// enable PLL
-		delay_ms(10);
+		HAL_Delay(10);
 		LCD_W_REGNUM(0xE0);		// Start PLL command again
 		LCD_W_DAT(0x03);		// now, use PLL output as system clock
-		delay_ms(12);
+		HAL_Delay(12);
 		LCD_W_REGNUM(0x01);		//软复位
-		delay_ms(10);
+		HAL_Delay(10);
 
 		LCD_W_REGNUM(0xE6);		//设置像素频率,33Mhz
 		LCD_W_DAT(0x2F);
