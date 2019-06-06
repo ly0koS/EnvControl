@@ -246,12 +246,47 @@ void TIM2_IRQHandler(void)
   */
 void TIM3_IRQHandler(void)
 {
+	uint8_t temp=0xFF;
+	uint8_t crc=0xFF;
+	uint8_t crc_init=0xFF;														//CRC初始值
+	uint8_t crc_bit;
   /* USER CODE BEGIN TIM3_IRQn 0 */
-
+	j=j+1;
   /* USER CODE END TIM3_IRQn 0 */
   HAL_TIM_IRQHandler(&htim3);
   /* USER CODE BEGIN TIM3_IRQn 1 */
-
+  if(j>=16)
+  {
+	  HAL_I2C_Master_Receive(&hi2c3,SGP30_Address,&SGP30_Data,24,10000);
+	  SGP30_Data=SGP30_Data>>8;													//将空的低8位0移除
+	  crc&=SGP30_Data;															//取8位校验位
+	  SGP30_Data=SGP30_Data>>8;													//将低8位的CRC移除
+	  temp&=SGP30_Data;															//取8位化学污染浓度
+	  SGP30_Data=SGP30_Data>>8;													//将低8位的化学污染浓度移除
+	  co2&=SGP30_Data;															//取8位二氧化碳浓度
+	  crc_init ^= co2;
+	  for(crc_bit=8;crc_bit>0;--crc_bit)
+	  {
+		  if(crc_init&0x80)
+			  crc_init=(crc_init<<1)^0x31;												//0x31校验多项式
+		  else
+			  crc_init=(crc_init<<1);
+	  }
+	  crc_init ^= temp;
+	  for(crc_bit=8;crc_bit>0;--crc_bit)
+	  {
+		  if(crc_init&0x80)
+			  crc_init=(crc_init<<1)^0x31;												//0x31校验多项式
+		  else
+			  crc_init=(crc_init<<1);
+	  }
+	  if(crc_init!=crc)
+	  {
+		  co2=0x00;
+		  temp=0x00;
+	  }
+	  j=15;
+  }
   /* USER CODE END TIM3_IRQn 1 */
 }
 
