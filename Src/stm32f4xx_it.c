@@ -58,6 +58,7 @@
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
+extern UART_HandleTypeDef huart1;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -246,11 +247,11 @@ void TIM2_IRQHandler(void)
   */
 void TIM3_IRQHandler(void)
 {
-	uint8_t temp=0xFF;
+  /* USER CODE BEGIN TIM3_IRQn 0 */
+  	uint8_t temp=0xFF;
 	uint8_t crc=0xFF;
 	uint8_t crc_init=0xFF;														//CRC初始值
 	uint8_t crc_bit;
-  /* USER CODE BEGIN TIM3_IRQn 0 */
 	j=j+1;
   /* USER CODE END TIM3_IRQn 0 */
   HAL_TIM_IRQHandler(&htim3);
@@ -268,7 +269,7 @@ void TIM3_IRQHandler(void)
 	  for(crc_bit=8;crc_bit>0;--crc_bit)
 	  {
 		  if(crc_init&0x80)
-			  crc_init=(crc_init<<1)^0x31;												//0x31校验多项式
+			  crc_init=(crc_init<<1)^0x31;										//0x31校验多项式
 		  else
 			  crc_init=(crc_init<<1);
 	  }
@@ -276,7 +277,7 @@ void TIM3_IRQHandler(void)
 	  for(crc_bit=8;crc_bit>0;--crc_bit)
 	  {
 		  if(crc_init&0x80)
-			  crc_init=(crc_init<<1)^0x31;												//0x31校验多项式
+			  crc_init=(crc_init<<1)^0x31;										//0x31校验多项式
 		  else
 			  crc_init=(crc_init<<1);
 	  }
@@ -288,6 +289,20 @@ void TIM3_IRQHandler(void)
 	  j=15;
   }
   /* USER CODE END TIM3_IRQn 1 */
+}
+
+/**
+  * @brief This function handles USART1 global interrupt.
+  */
+void USART1_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART1_IRQn 0 */
+
+  /* USER CODE END USART1_IRQn 0 */
+  HAL_UART_IRQHandler(&huart1);
+  /* USER CODE BEGIN USART1_IRQn 1 */
+
+  /* USER CODE END USART1_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
