@@ -277,7 +277,7 @@ static void MX_I2C3_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C3_Init 2 */
-
+  HAL_I2C_Master_Transmit(&hi2c3, SGP30_Address,&SGP30_init, sizeof(SGP30_init),10000);
   /* USER CODE END I2C3_Init 2 */
 
 }
