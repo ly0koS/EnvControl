@@ -104,7 +104,7 @@ void LCD_DisplayChar(u16 x,u16 y,u8 num,u8 size,u8 mode);						//显示一个字
 void LCD_DisplayNum(u16 x,u16 y,u32 num,u8 len,u8 size);  						//显示一个数字
 void LCD_DisplayxNum(u16 x,u16 y,u32 num,u8 len,u8 size,u8 mode);				//显示 数字
 void LCD_DisplayString(u16 x,u16 y,u16 width,u16 height,u8 size,u8 *p);		//显示一个字符串,12/16字体
-								//设置屏扫描方向
+void LCD_W_REG(vu16 LCD_REG_NUM,vu16 LCD_REG_VAL);								//设置屏扫描方向
 void LCD_Display_Dir(u8 dir);								//设置屏幕显示方向
 
 /*自定义结束*/
