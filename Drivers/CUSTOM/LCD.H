@@ -93,8 +93,9 @@ void LCD_SetCursor(u16 XPOS,u16 YPOS);
 void LCD_DrawPoint(u16 x,u16 y);
 void LCD_Fast_DrawPoint(u16 x,u16 y,u16 color);
 void LCD_Clear(u16 Color);
-
-void LCD_D_Circle(u16 x0,u16 y0,u8 r);						 				//画圆
+void LCD_DisplayOn(void);													//开显示
+void LCD_DisplayOff(void);
+void LCD_D_Cirncle(u16 x0,u16 y0,u8 r);						 				//画圆
 void LCD_D_Line(u16 x1, u16 y1, u16 x2, u16 y2);							//画线
 void LCD_D_Rectangle(u16 x1, u16 y1, u16 x2, u16 y2);		   				//画矩形
 void LCD_Fill(u16 sx,u16 sy,u16 ex,u16 ey,u16 color);		   				//填充单色
