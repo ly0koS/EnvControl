@@ -18,7 +18,9 @@ typedef __IO uint32_t  vu32;
 typedef __IO uint16_t vu16;
 typedef __IO uint8_t  vu8;
 /*End Variable typedef*/
-
+/*自定义变量开始*/
+extern u16 POINT_COLOR;
+/*自定义变量结束*/
 /*Begin Scan Direction*/
 #define L2R_U2D  0 //Left to Right & Up to Down
 #define L2R_D2U  1 //Left to Right & Down to Up

@@ -71,7 +71,9 @@ static void MX_FSMC_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	uint16_t lcd_id;
+	lcd_id=lcdcon.id;
+	LCD_Display_Dir(0);
   /* USER CODE END 1 */
   
 
@@ -104,7 +106,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  POINT_COLOR=RED;
+	  LCD_DisplayString(30,110,200,16,16,lcd_id);		//显示LCD ID
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
