@@ -69,15 +69,15 @@ void LCD_W_GRAM(u16 RGB_Code)
 /*End Writing GRAM*/
 void LCD_DisplayOn(void)
 {
-	if(lcdcon.id==0X9341||lcdcon.id==0X6804||lcdcon.id==0X5310||lcdcon.id==0X1963)LCD_WR_REG(0X29);	//开启显示
-	else if(lcdcon.id==0X5510)LCD_WR_REG(0X2900);	//开启显示
+	if(lcdcon.id==0X9341||lcdcon.id==0X6804||lcdcon.id==0X5310||lcdcon.id==0X1963)LCD_W_REGNUM(0X29);	//开启显示
+	else if(lcdcon.id==0X5510)LCD_W_REGNUM(0X2900);	//开启显示
 	else LCD_W_REG(0X07,0x0173); 				 	//开启显示
 }
 //LCD关闭显示
 void LCD_DisplayOff(void)
 {
-	if(lcdcon.id==0X9341||lcdcon.id==0X6804||lcdcon.id==0X5310||lcdcon.id==0X1963)LCD_WR_REG(0X28);	//关闭显示
-	else if(lcdcon.id==0X5510)LCD_WR_REG(0X2800);	//关闭显示
+	if(lcdcon.id==0X9341||lcdcon.id==0X6804||lcdcon.id==0X5310||lcdcon.id==0X1963)LCD_W_REGNUM(0X28);	//关闭显示
+	else if(lcdcon.id==0X5510)LCD_W_REGNUM(0X2800);	//关闭显示
 	else LCD_W_REG(0X07,0x0);//关闭显示
 }
 /*Begin Set Cursor*/

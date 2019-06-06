@@ -99,6 +99,7 @@ int main(void)
   MX_FSMC_Init();
   /* USER CODE BEGIN 2 */
   LCD_Init();
+  LCD_DisplayOn();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -107,7 +108,9 @@ int main(void)
   {
     /* USER CODE END WHILE */
 	POINT_COLOR=RED;
-	LCD_DisplayString(30,110,200,16,16,lcd_id);		//显示LCD ID
+	LCD_DisplayString(30,40,210,24,24,"Explorer STM32F4");
+	LCD_DisplayString(30,70,200,16,16,"TFTLCD TEST");
+	LCD_DisplayString(30,90,200,16,16,"ATOM@ALIENTEK");
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
