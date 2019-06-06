@@ -242,8 +242,8 @@ static void MX_I2C2_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C2_Init 2 */
-  HAL_I2C_Master_Transmit(&hi2c1, GY30_Address,&GY30_POWERON, sizeof(GY30_POWERON),10000);
-  HAL_I2C_Master_Transmit(&hi2c1, GY30_Address,&GY30_CHRM, sizeof(GY30_CHRM),10000);
+  HAL_I2C_Master_Transmit(&hi2c2, GY30_Address,&GY30_POWERON, sizeof(GY30_POWERON),10000);
+  HAL_I2C_Master_Transmit(&hi2c2, GY30_Address,&GY30_CHRM, sizeof(GY30_CHRM),10000);
   /* USER CODE END I2C2_Init 2 */
 
 }
