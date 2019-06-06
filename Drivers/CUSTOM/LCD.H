@@ -75,7 +75,7 @@ typedef struct
 	u16 height;
 	u16 id;
 	u8  dir;
-	u16	warmcmd;		//Prepare Write GRAM Command
+	u16	wramcmd;		//Prepare Write GRAM Command
 	u16 setxcmd;		//Set X axis
 	u16 setycmd;		//Set Y axis
 }_lcd_control;
@@ -90,7 +90,33 @@ u16 LCD_R_REG(vu16 LCD_REG_NUM);
 void LCD_W_GRAM_Prepare();
 void LCD_W_GRAM(u16 RGB_Code);
 void LCD_SetCursor(u16 XPOS,u16 YPOS);
-void LCD_DrawPoint(u16 x,u16 y,u16 point_color);
-/*自定义结束*/
+void LCD_DrawPoint(u16 x,u16 y);
+void LCD_Fast_DrawPoint(u16 x,u16 y,u16 color);
+void LCD_Clear(u16 Color);
 
+void LCD_D_Circle(u16 x0,u16 y0,u8 r);						 				//画圆
+void LCD_D_Line(u16 x1, u16 y1, u16 x2, u16 y2);							//画线
+void LCD_D_Rectangle(u16 x1, u16 y1, u16 x2, u16 y2);		   				//画矩形
+void LCD_Fill(u16 sx,u16 sy,u16 ex,u16 ey,u16 color);		   				//填充单色
+void LCD_C_Fill(u16 sx,u16 sy,u16 ex,u16 ey,u16 *color);				//填充指定颜色
+void LCD_DisplayChar(u16 x,u16 y,u8 num,u8 size,u8 mode);						//显示一个字符
+void LCD_DisplayNum(u16 x,u16 y,u32 num,u8 len,u8 size);  						//显示一个数字
+void LCD_DisplayxNum(u16 x,u16 y,u32 num,u8 len,u8 size,u8 mode);				//显示 数字
+void LCD_DisplayString(u16 x,u16 y,u16 width,u16 height,u8 size,u8 *p);		//显示一个字符串,12/16字体
+/*自定义结束*/
+#define SSD_HOR_RESOLUTION		800		//LCD水平分辨率
+#define SSD_VER_RESOLUTION		480		//LCD垂直分辨率
+//LCD驱动参数设置
+#define SSD_HOR_PULSE_WIDTH		1		//水平脉宽
+#define SSD_HOR_BACK_PORCH		46		//水平前廊
+#define SSD_HOR_FRONT_PORCH		210		//水平后廊
+
+#define SSD_VER_PULSE_WIDTH		1		//垂直脉宽
+#define SSD_VER_BACK_PORCH		23		//垂直前廊
+#define SSD_VER_FRONT_PORCH		22		//垂直前廊
+//如下几个参数，自动计算
+#define SSD_HT	(SSD_HOR_RESOLUTION+SSD_HOR_BACK_PORCH+SSD_HOR_FRONT_PORCH)
+#define SSD_HPS	(SSD_HOR_BACK_PORCH)
+#define SSD_VT 	(SSD_VER_RESOLUTION+SSD_VER_BACK_PORCH+SSD_VER_FRONT_PORCH)
+#define SSD_VPS (SSD_VER_BACK_PORCH)
 #endif /* CUSTOM_LCD_H_ */
