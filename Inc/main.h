@@ -51,14 +51,16 @@ uint8_t AHT10_CalibrateCmd[3];
 uint8_t AHT10_MeasureCmd[3];
 uint8_t AHT10_Data[6];
 uint8_t GY30_Data[3];
-uint16_t SGP30_init=0x2003;
-uint16_t SGP30_measure=0x2008;
+uint16_t SGP30_init;
+uint16_t SGP30_measure;
 uint32_t SGP30_Data;
 uint8_t temperture;
 uint8_t RH;
-uint8_t co2=0x00;
+uint8_t co2;
 uint8_t light;
-uint8_t i,j=0;
+uint8_t i,j;
+uint8_t GY30_POWERON;
+uint8_t GY30_CHRM;
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
