@@ -99,11 +99,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-   	POINT_COLOR=RED;
-  	LCD_Clear(RED);
-	LCD_DisplayString(30,40,210,24,24,"Explorer STM32F4");
-	LCD_DisplayString(30,70,200,16,16,"TFTLCD TEST");
-	LCD_DisplayString(30,90,200,16,16,"ATOM@ALIENTEK");
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

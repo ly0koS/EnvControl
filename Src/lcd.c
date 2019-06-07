@@ -2443,7 +2443,7 @@ void LCD_Init(void)
 		LCD_SSD_BackLightSet(100);//背光设置为最亮
 	}
 	LCD_Display_Dir(0);		//默认为竖屏
-//	LCD_LED=1;				//点亮背光
+	LCD_LED=1;				//点亮背光
 	LCD_Clear(WHITE);
 }
 void LCD_Clear(u16 color)
@@ -2675,13 +2675,13 @@ void LCD_DisplayxNum(u16 x,u16 y,u32 num,u8 len,u8 size,u8 mode)
 		{
 			if(temp==0)
 			{
-				if(mode&0X80)LCD_ShowChar(x+(size/2)*t,y,'0',size,mode&0X01);
-				else LCD_ShowChar(x+(size/2)*t,y,' ',size,mode&0X01);
+				if(mode&0X80)LCD_DisplayChar(x+(size/2)*t,y,'0',size,mode&0X01);
+				else LCD_DisplayChar(x+(size/2)*t,y,' ',size,mode&0X01);
  				continue;
 			}else enshow=1;
 
 		}
-	 	LCD_ShowChar(x+(size/2)*t,y,temp+'0',size,mode&0X01);
+		LCD_DisplayChar(x+(size/2)*t,y,temp+'0',size,mode&0X01);
 	}
 }
 //显示字符串

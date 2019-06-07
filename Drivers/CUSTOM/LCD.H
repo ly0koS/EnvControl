@@ -35,6 +35,7 @@ extern u16 BACK_COLOR;
 
 #define DFT_SCAN_DIR  L2R_U2D 	//Default Scan Direction
 /*END Scan Direction*/
+
 /*颜色声明开始*/
 //画笔颜色
 #define WHITE         	 0xFFFF
@@ -59,6 +60,11 @@ extern u16 BACK_COLOR;
 /*颜色声明结束*/
 
 /*Begin RS Control*/
+#define BITBAND(addr, bitnum) ((addr & 0xF0000000)+0x2000000+((addr &0xFFFFF)<<5)+(bitnum<<2))
+#define MEM_ADDR(addr)  *((volatile unsigned long  *)(addr))
+#define BIT_ADDR(addr, bitnum)   MEM_ADDR(BITBAND(addr, bitnum))
+#define GPIOB_ODR_Addr    (GPIOB_BASE+20) //0x40020414
+#define	LCD_LED BIT_ADDR(GPIOB_ODR_Addr,15)  		//LCD背光    		 PB15
 typedef struct
 {
 	vu16 LCD_REG;
