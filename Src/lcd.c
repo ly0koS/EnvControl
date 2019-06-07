@@ -2652,7 +2652,7 @@ void LCD_DisplayNum(u16 x,u16 y,u32 num,u8 len,u8 size)
 			}else enshow=1;
 
 		}
-	 	LCD_ShowChar(x+(size/2)*t,y,temp+'0',size,0);
+	 	LCD_DisplayChar(x+(size/2)*t,y,temp+'0',size,0);
 	}
 }
 //显示数字,高位为0,还是显示
