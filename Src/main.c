@@ -35,12 +35,13 @@
 /* USER CODE BEGIN PD */
 uint8_t temperture;
 uint8_t RH;
-uint8_t co2;
+uint8_t co2=0x00;
 uint8_t light;
 uint8_t AHT10_CalibrateCmd[3]={0xE1, 0x08, 0x00};
 uint8_t AHT10_MeasureCmd[3]={0xAC, 0x33, 0x00};
 uint8_t GY30_POWERON=0x01;
 uint8_t GY30_CHRM=0x10;
+uint16_t SGP30_init=0x2003;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -92,7 +93,7 @@ static void MX_USART1_UART_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	uint8_t hello[]="\r\nInitialize ENVControl!\n\r";
   /* USER CODE END 1 */
   
 
@@ -123,7 +124,7 @@ int main(void)
   MX_TIM3_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_UART_Transmit(&huart1,(uint8_t *)hello,sizeof(hello),100000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -131,7 +132,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  USART1_IRQHandler();
+	  HAL_Delay(1000);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -281,7 +283,7 @@ static void MX_I2C3_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C3_Init 2 */
-  HAL_I2C_Master_Transmit(&hi2c3, SGP30_Address,&SGP30_init, sizeof(SGP30_init),10000);
+  HAL_I2C_Master_Transmit(&hi2c3,SGP30_Address,&SGP30_init, sizeof(SGP30_init),10000);
   /* USER CODE END I2C3_Init 2 */
 
 }

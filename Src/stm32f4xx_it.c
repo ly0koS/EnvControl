@@ -297,11 +297,15 @@ void TIM3_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
-
+	HAL_Delay(500);
+	HAL_UART_Transmit(&huart1,(uint8_t *)temperture,sizeof(temperture),10000);
+	HAL_Delay(500);
   /* USER CODE END USART1_IRQn 0 */
-  HAL_UART_IRQHandler(&huart1);
+	HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
-
+	HAL_UART_Transmit(&huart1,(uint8_t *)RH,sizeof(RH),10000);
+	HAL_Delay(500);
+	HAL_UART_Transmit(&huart1,(uint8_t *)light,sizeof(light),10000);
   /* USER CODE END USART1_IRQn 1 */
 }
 
