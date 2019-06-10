@@ -67,6 +67,15 @@ void LCD_W_GRAM(u16 RGB_Code)
 	LCD->LCD_RAM=RGB_Code;
 }
 /*End Writing GRAM*/
+u16 LCD_BGR2RGB(u16 c)
+{
+	u16  r,g,b,rgb;
+	b=(c>>0)&0x1f;
+	g=(c>>5)&0x3f;
+	r=(c>>11)&0x1f;
+	rgb=(b<<11)+(g<<5)+(r<<0);
+	return(rgb);
+}
 void LCD_DisplayOn(void)
 {
 	if(lcdcon.id==0X9341||lcdcon.id==0X6804||lcdcon.id==0X5310||lcdcon.id==0X1963)LCD_W_REGNUM(0X29);	//开启显示
