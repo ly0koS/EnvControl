@@ -36,7 +36,7 @@
 uint8_t j=0x00;
 uint8_t temperture;
 uint8_t RH;
-uint8_t co2;
+uint8_t co2=0x00;
 uint8_t light;
 uint8_t AHT10_CalibrateCmd[3]={0xE1, 0x08, 0x00};
 uint8_t AHT10_MeasureCmd[3]={0xAC, 0x33, 0x00};
@@ -45,6 +45,7 @@ uint16_t SGP30_measure=0x2008;
 uint8_t co2=0x00;
 uint8_t GY30_POWERON=0x01;
 uint8_t GY30_CHRM=0x10;
+uint16_t SGP30_init=0x2003;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -60,6 +61,8 @@ I2C_HandleTypeDef hi2c3;
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
+
+UART_HandleTypeDef huart1;
 
 SRAM_HandleTypeDef hsram1;
 
@@ -77,6 +80,7 @@ static void MX_I2C3_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -93,7 +97,7 @@ static void MX_TIM3_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	uint8_t hello[]="\r\nInitialize ENVControl!\n\r";
   /* USER CODE END 1 */
   
 
@@ -122,8 +126,9 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_UART_Transmit(&huart1,(uint8_t *)hello,sizeof(hello),100000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -131,7 +136,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  USART1_IRQHandler();
+	  HAL_Delay(1000);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -281,7 +287,7 @@ static void MX_I2C3_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C3_Init 2 */
-  HAL_I2C_Master_Transmit(&hi2c3, SGP30_Address,&SGP30_init, sizeof(SGP30_init),10000);
+  HAL_I2C_Master_Transmit(&hi2c3,SGP30_Address,&SGP30_init, sizeof(SGP30_init),10000);
   /* USER CODE END I2C3_Init 2 */
 
 }
@@ -419,6 +425,39 @@ static void MX_TIM3_Init(void)
   /* USER CODE BEGIN TIM3_Init 2 */
 
   /* USER CODE END TIM3_Init 2 */
+
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
 
 }
 

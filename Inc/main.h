@@ -127,6 +127,7 @@ void Error_Handler(void);
 #define AHT10_Address 0x38
 #define GY30_Address 0x46
 #define SGP30_Address 0x58
+#define SGP30_measure 0x2008
 #define I2C2_SDA_Pin GPIO_PIN_0
 #define I2C2_SDA_GPIO_Port GPIOF
 #define I2C2_SCL_Pin GPIO_PIN_1
