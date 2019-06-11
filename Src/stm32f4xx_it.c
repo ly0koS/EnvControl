@@ -55,15 +55,14 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern TIM_HandleTypeDef htim1;
-extern TIM_HandleTypeDef htim2;
-extern TIM_HandleTypeDef htim3;
-extern UART_HandleTypeDef huart1;
-extern I2C_HandleTypeDef hi2c1;
-extern I2C_HandleTypeDef hi2c2;
-extern I2C_HandleTypeDef hi2c3;
 /* USER CODE BEGIN EV */
-
+	extern I2C_HandleTypeDef hi2c1;
+	extern I2C_HandleTypeDef hi2c2;
+	extern I2C_HandleTypeDef hi2c3;
+	extern TIM_HandleTypeDef htim1;
+	extern TIM_HandleTypeDef htim2;
+	extern TIM_HandleTypeDef htim3;
+	extern UART_HandleTypeDef huart1;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -270,7 +269,7 @@ void TIM3_IRQHandler(void)
   {
 	  HAL_I2C_Master_Receive(&hi2c3,SGP30_Address,&SGP30_Data,24,10000);
 	  SGP30_Data=SGP30_Data>>8;													//将空的低8位0移除
-	  crc&=SGP30_Data;															//取8位校验位
+	  crc&=SGP30_Data;															//取8位校验位
 	  SGP30_Data=SGP30_Data>>8;													//将低8位的CRC移除
 	  temp&=SGP30_Data;															//取8位化学污染浓度
 	  SGP30_Data=SGP30_Data>>8;													//将低8位的化学污染浓度移除
@@ -287,7 +286,7 @@ void TIM3_IRQHandler(void)
 	  for(crc_bit=8;crc_bit>0;--crc_bit)
 	  {
 		  if(crc_init&0x80)
-			  crc_init=(crc_init<<1)^0x31;										//0x31校验多项式
+			  crc_init=(crc_init<<1)^0x31;										//0x31校验多项式
 		  else
 			  crc_init=(crc_init<<1);
 	  }

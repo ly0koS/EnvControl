@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=E:/STM32/work/EnvControl-Software/Inc
+HeaderPath=D:/STM32/EnvControl-Software/Inc
 HeaderFiles=stm32f4xx_it.h;stm32f4xx_hal_conf.h;main.h;
-SourcePath=E:/STM32/work/EnvControl-Software/Src
+SourcePath=D:/STM32/EnvControl-Software/Src
 SourceFiles=stm32f4xx_it.c;stm32f4xx_hal_msp.c;main.c;
 
 [PreviousLibFiles]
