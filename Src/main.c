@@ -36,12 +36,9 @@
 uint8_t j=0x00;
 uint8_t temperture;
 uint8_t RH;
-uint8_t co2=0x00;
 uint8_t light;
 uint8_t AHT10_CalibrateCmd[3]={0xE1, 0x08, 0x00};
 uint8_t AHT10_MeasureCmd[3]={0xAC, 0x33, 0x00};
-uint16_t SGP30_init=0x2003;
-uint16_t SGP30_measure=0x2008;
 uint8_t co2=0x00;
 uint8_t GY30_POWERON=0x01;
 uint8_t GY30_CHRM=0x10;
