@@ -55,6 +55,10 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim2;
+extern TIM_HandleTypeDef htim3;
+extern UART_HandleTypeDef huart1;
 /* USER CODE BEGIN EV */
 	extern I2C_HandleTypeDef hi2c1;
 	extern I2C_HandleTypeDef hi2c2;
@@ -312,7 +316,7 @@ void USART1_IRQHandler(void)
 	HAL_UART_Transmit(&huart1,(uint8_t *)temperture,sizeof(temperture),10000);
 	HAL_Delay(500);
   /* USER CODE END USART1_IRQn 0 */
-	HAL_UART_IRQHandler(&huart1);
+  HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
 	HAL_UART_Transmit(&huart1,(uint8_t *)RH,sizeof(RH),10000);
 	HAL_Delay(500);
