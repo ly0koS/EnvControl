@@ -71,6 +71,58 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define I2C2_SDA_Pin GPIO_PIN_0
+#define I2C2_SDA_GPIO_Port GPIOF
+#define I2C2_SCL_Pin GPIO_PIN_1
+#define I2C2_SCL_GPIO_Port GPIOF
+#define FSMC_A6_Pin GPIO_PIN_12
+#define FSMC_A6_GPIO_Port GPIOF
+#define FSMC_D4_Pin GPIO_PIN_7
+#define FSMC_D4_GPIO_Port GPIOE
+#define FSMC_D5_Pin GPIO_PIN_8
+#define FSMC_D5_GPIO_Port GPIOE
+#define FSMC_D6_Pin GPIO_PIN_9
+#define FSMC_D6_GPIO_Port GPIOE
+#define FSMC_D7_Pin GPIO_PIN_10
+#define FSMC_D7_GPIO_Port GPIOE
+#define FSMC_D8_Pin GPIO_PIN_11
+#define FSMC_D8_GPIO_Port GPIOE
+#define FSMC_D9_Pin GPIO_PIN_12
+#define FSMC_D9_GPIO_Port GPIOE
+#define FSMC_D10_Pin GPIO_PIN_13
+#define FSMC_D10_GPIO_Port GPIOE
+#define FSMC_D11_Pin GPIO_PIN_14
+#define FSMC_D11_GPIO_Port GPIOE
+#define FSMC_D12_Pin GPIO_PIN_15
+#define FSMC_D12_GPIO_Port GPIOE
+#define FSMC_D13_Pin GPIO_PIN_8
+#define FSMC_D13_GPIO_Port GPIOD
+#define FSMC_D14_Pin GPIO_PIN_9
+#define FSMC_D14_GPIO_Port GPIOD
+#define FSMC_D15_Pin GPIO_PIN_10
+#define FSMC_D15_GPIO_Port GPIOD
+#define FSMC_D0_Pin GPIO_PIN_14
+#define FSMC_D0_GPIO_Port GPIOD
+#define FSMC_D1_Pin GPIO_PIN_15
+#define FSMC_D1_GPIO_Port GPIOD
+#define I2C3_SDA_Pin GPIO_PIN_9
+#define I2C3_SDA_GPIO_Port GPIOC
+#define I2C3_SCL_Pin GPIO_PIN_8
+#define I2C3_SCL_GPIO_Port GPIOA
+#define FSMC_D2_Pin GPIO_PIN_0
+#define FSMC_D2_GPIO_Port GPIOD
+#define FSMC_D3_Pin GPIO_PIN_1
+#define FSMC_D3_GPIO_Port GPIOD
+#define FSMC_D17_Pin GPIO_PIN_4
+#define FSMC_D17_GPIO_Port GPIOD
+#define FSMC_D18_Pin GPIO_PIN_5
+#define FSMC_D18_GPIO_Port GPIOD
+#define FSMC_D16_Pin GPIO_PIN_12
+#define FSMC_D16_GPIO_Port GPIOG
+#define I2C1_SCL_Pin GPIO_PIN_6
+#define I2C1_SCL_GPIO_Port GPIOB
+#define I2C1_SDA_Pin GPIO_PIN_7
+#define I2C1_SDA_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 #define AHT10_Address 0x38
 #define GY30_Address 0x46
@@ -128,15 +180,7 @@ void Error_Handler(void);
 #define I2C1_SDA_Pin GPIO_PIN_7
 #define I2C1_SDA_GPIO_Port GPIOB
 /* USER CODE END Private defines */
-/*USER CODE Begin Private Variables*/
-I2C_HandleTypeDef hi2c1;
-I2C_HandleTypeDef hi2c2;
-I2C_HandleTypeDef hi2c3;
 
-TIM_HandleTypeDef htim1;
-TIM_HandleTypeDef htim2;
-TIM_HandleTypeDef htim3;
-/*USER CODE End Private Variables*/
 #ifdef __cplusplus
 }
 #endif
