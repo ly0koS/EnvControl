@@ -205,7 +205,8 @@ void SysTick_Handler(void)
 void TIM1_UP_TIM10_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 0 */
-
+	HAL_TIM_Base_Stop_IT(&htim2);
+	HAL_TIM_Base_Stop_IT(&htim3);
   /* USER CODE END TIM1_UP_TIM10_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 1 */
@@ -219,7 +220,8 @@ void TIM1_UP_TIM10_IRQHandler(void)
   temperture=temperture * 100 / 1048576;
   RH=((AHT10_Data[3] & 0x0F) << 16) | (AHT10_Data[4] << 8) | AHT10_Data[5];
   RH=((200 * RH) / 1048576) - 50;
-
+  HAL_TIM_Base_Start_IT(&htim2);
+  HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END TIM1_UP_TIM10_IRQn 1 */
 }
 
@@ -229,7 +231,8 @@ void TIM1_UP_TIM10_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM2_IRQn 0 */
-
+	HAL_TIM_Base_Stop_IT(&htim1);
+	HAL_TIM_Base_Stop_IT(&htim3);
   /* USER CODE END TIM2_IRQn 0 */
   HAL_TIM_IRQHandler(&htim2);
   /* USER CODE BEGIN TIM2_IRQn 1 */
@@ -239,6 +242,8 @@ void TIM2_IRQHandler(void)
   }
   light=GY30_Data[0];
   light=(light<<8)+GY30_Data[1];
+  HAL_TIM_Base_Start_IT(&htim1);
+  HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END TIM2_IRQn 1 */
 }
 
@@ -248,11 +253,19 @@ void TIM2_IRQHandler(void)
 void TIM3_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM3_IRQn 0 */
+<<<<<<< HEAD
+	uint8_t temp=0xFF;
+	uint8_t crc=0xFF;
+	uint8_t crc_init=0xFF;														//CRC初始值
+=======
   uint8_t temp=0xFF;
 	uint8_t crc=0xFF;
 	uint8_t crc_init=0xFF;														//CRCåˆå§‹å€¼
+>>>>>>> branch 'Sensors' of https://github.com/ly0koS/EnvControl-Software.git
 	uint8_t crc_bit;
 	j=j+1;
+	HAL_TIM_Base_Stop_IT(&htim1);
+	HAL_TIM_Base_Stop_IT(&htim2);
   /* USER CODE END TIM3_IRQn 0 */
   HAL_TIM_IRQHandler(&htim3);
   /* USER CODE BEGIN TIM3_IRQn 1 */
@@ -287,6 +300,8 @@ void TIM3_IRQHandler(void)
 		  temp=0x00;
 	  }
 	  j=15;
+	HAL_TIM_Base_Start_IT(&htim1);
+	HAL_TIM_Base_Start_IT(&htim2);
   }
   /* USER CODE END TIM3_IRQn 1 */
 }
