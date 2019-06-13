@@ -54,8 +54,8 @@ uint8_t GY30_Data[3];
 uint16_t SGP30_init;
 uint16_t SGP30_measure;
 uint32_t SGP30_Data;
-uint8_t temperture;
-uint8_t RH;
+float temperture;
+float RH;
 uint8_t co2;
 uint8_t light;
 uint8_t i,j;
@@ -124,9 +124,9 @@ void Error_Handler(void);
 #define I2C1_SDA_Pin GPIO_PIN_7
 #define I2C1_SDA_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
-#define AHT10_Address 0x38
-#define GY30_Address 0x46
-#define SGP30_Address 0x58
+#define AHT10_Address (0x38<<1)
+#define GY30_Address (0x46<<1)
+#define SGP30_Address (0x58<<1)
 #define SGP30_measure 0x2008
 #define I2C2_SDA_Pin GPIO_PIN_0
 #define I2C2_SDA_GPIO_Port GPIOF

@@ -2526,9 +2526,9 @@ HAL_StatusTypeDef HAL_I2C_Mem_Write(I2C_HandleTypeDef *hi2c, uint16_t DevAddress
   * @param  Size Amount of data to be sent
   * @param  Timeout Timeout duration
   * @retval HAL status
-  *///EFPORM写函数
+  */
 HAL_StatusTypeDef HAL_I2C_Mem_Read(I2C_HandleTypeDef *hi2c, uint16_t DevAddress, uint16_t MemAddress, uint16_t MemAddSize, uint8_t *pData, uint16_t Size, uint32_t Timeout)
-{//hi2c：HAL库I2C结构体指针   DevAddress：器件地址
+{
   /* Init tickstart for timeout management*/
   uint32_t tickstart = HAL_GetTick();
 
@@ -2538,7 +2538,7 @@ HAL_StatusTypeDef HAL_I2C_Mem_Read(I2C_HandleTypeDef *hi2c, uint16_t DevAddress,
   if (hi2c->State == HAL_I2C_STATE_READY)
   {
     /* Wait until BUSY flag is reset */
-    if (I2C_WaitOnFlagUntilTimeout(hi2c, I2C_FLAG_BUSY, SET, I2C_TIMEOUT_BUSY_FLAG, tickstart) != HAL_OK)//HAL_OK:成功
+    if (I2C_WaitOnFlagUntilTimeout(hi2c, I2C_FLAG_BUSY, SET, I2C_TIMEOUT_BUSY_FLAG, tickstart) != HAL_OK)
     {
       return HAL_BUSY;
     }
