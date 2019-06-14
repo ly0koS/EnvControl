@@ -238,13 +238,12 @@ void TIM2_IRQHandler(void)
 	HAL_TIM_Base_Stop_IT(&htim3);
   /* USER CODE END TIM2_IRQn 0 */
   HAL_TIM_IRQHandler(&htim2);
+  uint16_t lt;
   /* USER CODE BEGIN TIM2_IRQn 1 */
-  for(i=0;i<3;i++)
-  {
-	  HAL_I2C_Master_Receive(&hi2c2,GY30_Address,&GY30_Data[i],sizeof(GY30_Data[i]),10000);
-  }
-  light=GY30_Data[0];
-  light=(light<<8)+GY30_Data[1];
+  while(HAL_I2C_Master_Receive(&hi2c2,GY30_Address,&GY30_Data,2,1000)!=HAL_OK);
+  lt=GY30_Data[0];
+  lt=(lt<<8)+GY30_Data[1];
+  light=(float)lt/1.2;
   HAL_TIM_Base_Start_IT(&htim1);
   HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END TIM2_IRQn 1 */
@@ -273,7 +272,7 @@ void TIM3_IRQHandler(void)
 	  crc&=SGP30_Data;															//�??8位校验位
 	  SGP30_Data=SGP30_Data>>8;													//将低8位的CRC移除
 	  temp&=SGP30_Data;															//�??8位化学污染浓�??
-	  SGP30_Data=SGP30_Data>>8;													//将低8位的化学污染浓度移除
+	  SGP30_Data=SGP30_Data>>8;													//将低8位的化学污浓度移除
 	  co2&=SGP30_Data;															//�??8位二氧化碳浓�??
 	  crc_init ^= co2;
 	  for(crc_bit=8;crc_bit>0;--crc_bit)
@@ -317,7 +316,7 @@ void USART1_IRQHandler(void)
   /* USER CODE BEGIN USART1_IRQn 1 */
 //	HAL_UART_Transmit(&huart1,(uint8_t *)RH,sizeof(RH),10000);
 	HAL_Delay(500);
-	HAL_UART_Transmit(&huart1,(uint8_t *)light,sizeof(light),10000);
+//	HAL_UART_Transmit(&huart1,(uint8_t *)light,sizeof(light),10000);
   /* USER CODE END USART1_IRQn 1 */
 }
 

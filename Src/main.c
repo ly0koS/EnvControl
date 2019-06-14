@@ -35,7 +35,7 @@
 uint8_t j=0x00;
 float temperture;
 float RH;
-uint8_t light;
+float light;
 uint8_t AHT10_CalibrateCmd[3]={0xA8, 0x08, 0x00};
 uint8_t AHT10_MeasureCmd[3]={0xAC, 0x33, 0x00};
 uint8_t co2=0x00;
@@ -114,12 +114,12 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_FSMC_Init();
+//  MX_FSMC_Init();
   MX_I2C1_Init();
 //  MX_I2C2_Init();
 //  MX_I2C3_Init();
   MX_TIM1_Init();
-//  MX_TIM2_Init();
+  MX_TIM2_Init();
 //  MX_TIM3_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
@@ -131,7 +131,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  TIM1_UP_TIM10_IRQHandler();
+	  TIM2_IRQHandler();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -198,7 +198,7 @@ static void MX_I2C1_Init(void)
   hi2c1.Instance = I2C1;
   hi2c1.Init.ClockSpeed = 100000;
   hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  hi2c1.Init.OwnAddress1 = 112;
+  hi2c1.Init.OwnAddress1 = 0;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
   hi2c1.Init.OwnAddress2 = 0;
@@ -235,7 +235,7 @@ static void MX_I2C2_Init(void)
   hi2c2.Instance = I2C2;
   hi2c2.Init.ClockSpeed = 100000;
   hi2c2.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  hi2c2.Init.OwnAddress1 = 140;
+  hi2c2.Init.OwnAddress1 = 0;
   hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
   hi2c2.Init.OwnAddress2 = 0;
@@ -246,8 +246,9 @@ static void MX_I2C2_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C2_Init 2 */
-  HAL_I2C_Master_Transmit(&hi2c2, GY30_Address,&GY30_POWERON, sizeof(GY30_POWERON),10000);
-  HAL_I2C_Master_Transmit(&hi2c2, GY30_Address,&GY30_CHRM, sizeof(GY30_CHRM),10000);
+  while(HAL_I2C_Master_Transmit(&hi2c1, GY30_Address,&GY30_POWERON,1,1000)!=HAL_OK);
+  while(HAL_I2C_Master_Transmit(&hi2c1, GY30_Address,&GY30_CHRM, sizeof(GY30_CHRM),1000)!=HAL_OK);
+  HAL_Delay(180);
   /* USER CODE END I2C2_Init 2 */
 
 }
@@ -270,7 +271,7 @@ static void MX_I2C3_Init(void)
   hi2c3.Instance = I2C3;
   hi2c3.Init.ClockSpeed = 100000;
   hi2c3.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  hi2c3.Init.OwnAddress1 = 176;
+  hi2c3.Init.OwnAddress1 = 0;
   hi2c3.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c3.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
   hi2c3.Init.OwnAddress2 = 0;
@@ -281,7 +282,6 @@ static void MX_I2C3_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C3_Init 2 */
-  while(HAL_I2C_Master_Transmit(&hi2c3, AHT10_Address,&AHT10_CalibrateCmd[i], sizeof(AHT10_CalibrateCmd[i]),10000)!=HAL_OK)
   while(HAL_I2C_Master_Transmit(&hi2c3,SGP30_Address,&SGP30_init, sizeof(SGP30_init),10000)!=HAL_OK);
   /* USER CODE END I2C3_Init 2 */
 
