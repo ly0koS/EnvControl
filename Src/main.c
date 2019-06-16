@@ -134,6 +134,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	  HAL_TIM_Base_Start_IT(&htim1);
+	//  HAL_TIM_Base_Start_IT(&htim2);
+	  HAL_TIM_Base_Start_IT(&htim3);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

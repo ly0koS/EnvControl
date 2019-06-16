@@ -261,7 +261,6 @@ void TIM3_IRQHandler(void)
   /* USER CODE END TIM3_IRQn 0 */
   HAL_TIM_IRQHandler(&htim3);
   /* USER CODE BEGIN TIM3_IRQn 1 */
-  HAL_Delay(100);
   while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,STATUS,0,&CCS811_Data,0,1000)!=HAL_OK);
   while(HAL_I2C_Master_Receive(&hi2c3,CCS811_Address,&CCS811_Data,1,1000)!=HAL_OK);
   if(CCS811_Data[0] & 0x8)
