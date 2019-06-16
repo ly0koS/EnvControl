@@ -54,9 +54,10 @@ uint8_t GY30_Data[2];
 uint16_t SGP30_init;
 uint16_t SGP30_measure;
 uint32_t SGP30_Data;
+uint8_t CCS811_Data[8];
 float temperture;
 float RH;
-uint8_t co2;
+uint16_t co2;
 float light;
 uint8_t i,j;
 uint8_t GY30_POWERON;
@@ -105,6 +106,8 @@ void Error_Handler(void);
 #define FSMC_D0_GPIO_Port GPIOD
 #define FSMC_D1_Pin GPIO_PIN_15
 #define FSMC_D1_GPIO_Port GPIOD
+#define nWake_Pin GPIO_PIN_8
+#define nWake_GPIO_Port GPIOC
 #define I2C3_SDA_Pin GPIO_PIN_9
 #define I2C3_SDA_GPIO_Port GPIOC
 #define I2C3_SCL_Pin GPIO_PIN_8
@@ -124,10 +127,23 @@ void Error_Handler(void);
 #define I2C1_SDA_Pin GPIO_PIN_7
 #define I2C1_SDA_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
+/* AHT10 BEGIN Private defines */
 #define AHT10_Address (0x38<<1)
+/* AHT10 END Private defines */
+/* GY30 BEGIN Private defines */
 #define GY30_Address 0x46
+/* GY30 END Private defines */
+/* SGP30 BEGIN Private defines */
 #define SGP30_Address 0x58
 #define SGP30_measure 0x2008
+/* SGP30 END Private defines */
+/* CCS811 BEGIN Private defines */
+#define CCS811_Address (0x5A<<1)
+#define STATUS 0x00
+#define MEAS_Mode_Reg 0x01
+#define ALG_Result_Data 0x02
+#define ENV_Data 0x05
+/* CCS811 END Private defines */
 #define I2C2_SDA_Pin GPIO_PIN_0
 #define I2C2_SDA_GPIO_Port GPIOF
 #define I2C2_SCL_Pin GPIO_PIN_1

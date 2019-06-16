@@ -217,7 +217,7 @@ void TIM1_UP_TIM10_IRQHandler(void)
   /* USER CODE END TIM1_UP_TIM10_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 1 */
-  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xAC,2,t,sizeof(t),10000)!=HAL_OK);		//发�?�获取数值指�?
+  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xAC,2,t,sizeof(t),10000)!=HAL_OK);		//发�?�获取数值指�??
   while(HAL_I2C_Master_Receive(&hi2c1,AHT10_Address,AHT10_Data,6,10000)!=HAL_OK);
   temperture=(AHT10_Data[3] & 0x0F) << 16 | AHT10_Data[4] << 8 | AHT10_Data[5];
   temperture=temperture*200;
@@ -238,8 +238,8 @@ void TIM2_IRQHandler(void)
 	HAL_TIM_Base_Stop_IT(&htim3);
   /* USER CODE END TIM2_IRQn 0 */
   HAL_TIM_IRQHandler(&htim2);
-  uint16_t lt;
   /* USER CODE BEGIN TIM2_IRQn 1 */
+    uint16_t lt;
   while(HAL_I2C_Master_Receive(&hi2c2,GY30_Address,&GY30_Data,2,1000)!=HAL_OK);
   lt=GY30_Data[0];
   lt=(lt<<8)+GY30_Data[1];
@@ -255,50 +255,22 @@ void TIM2_IRQHandler(void)
 void TIM3_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM3_IRQn 0 */
-	uint8_t temp=0xFF;
-	uint8_t crc=0xFF;
-	uint8_t crc_init=0xFF;														//CRC初始�??
-	uint8_t crc_bit;
-	j=j+1;
 	HAL_TIM_Base_Stop_IT(&htim1);
 	HAL_TIM_Base_Stop_IT(&htim2);
   /* USER CODE END TIM3_IRQn 0 */
   HAL_TIM_IRQHandler(&htim3);
   /* USER CODE BEGIN TIM3_IRQn 1 */
-  if(j>=16)
-  {
-	  HAL_I2C_Master_Receive(&hi2c3,SGP30_Address,&SGP30_Data,24,10000);
-	  SGP30_Data=SGP30_Data>>8;													//将空的低8�??0移除
-	  crc&=SGP30_Data;															//�??8位校验位
-	  SGP30_Data=SGP30_Data>>8;													//将低8位的CRC移除
-	  temp&=SGP30_Data;															//�??8位化学污染浓�??
-	  SGP30_Data=SGP30_Data>>8;													//将低8位的化学污浓度移除
-	  co2&=SGP30_Data;															//�??8位二氧化碳浓�??
-	  crc_init ^= co2;
-	  for(crc_bit=8;crc_bit>0;--crc_bit)
-	  {
-		  if(crc_init&0x80)
-			  crc_init=(crc_init<<1)^0x31;										//0x31校验多项�??
-		  else
-			  crc_init=(crc_init<<1);
-	  }
-	  crc_init ^= temp;
-	  for(crc_bit=8;crc_bit>0;--crc_bit)
-	  {
-		  if(crc_init&0x80)
-			  crc_init=(crc_init<<1)^0x31;										//0x31校验多项�??
-		  else
-			  crc_init=(crc_init<<1);
-	  }
-	  if(crc_init!=crc)
-	  {
-		  co2=0x00;
-		  temp=0x00;
-	  }
-	  j=15;
+  HAL_Delay(1000);
+	while(HAL_I2C_Mem_Write(&hi2c1,CCS811_Address,STATUS,0,&CCS811_Data,0,1000)!=HAL_OK);
+	while(HAL_I2C_Master_Receive(&hi2c1,CCS811_Address,&CCS811_Data,1,1000)!=HAL_OK);
+	if(CCS811_Data[0] & 0x8)
+	{
+		while(HAL_I2C_Mem_Write(&hi2c1,CCS811_Address,ALG_Result_Data,1,&CCS811_Data,0,1000)!=HAL_OK);
+		while(HAL_I2C_Master_Receive(&hi2c1,CCS811_Address,&CCS811_Data,8,1000)!=HAL_OK);
+	}
+	co2=(CCS811_Data[0]<<8)+CCS811_Data[1];
 	HAL_TIM_Base_Start_IT(&htim1);
 	HAL_TIM_Base_Start_IT(&htim2);
-  }
   /* USER CODE END TIM3_IRQn 1 */
 }
 
