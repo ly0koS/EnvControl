@@ -211,7 +211,7 @@ void SysTick_Handler(void)
 void TIM1_UP_TIM10_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 0 */
-	HAL_TIM_Base_Stop_IT(&htim2);
+//	HAL_TIM_Base_Stop_IT(&htim2);
 	HAL_TIM_Base_Stop_IT(&htim3);
 	uint8_t t[2]={0,0};
   /* USER CODE END TIM1_UP_TIM10_IRQn 0 */
@@ -223,7 +223,7 @@ void TIM1_UP_TIM10_IRQHandler(void)
   temperture=temperture*200;
   temperture=temperture/(1<<20)-50;
   RH=((AHT10_Data[1] << 12) | (AHT10_Data[2] << 4) | (AHT10_Data[3] & 0xf0) >> 4) * 100/(1<<20);
-  HAL_TIM_Base_Start_IT(&htim2);
+//  HAL_TIM_Base_Start_IT(&htim2);
   HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END TIM1_UP_TIM10_IRQn 1 */
 }
@@ -256,21 +256,23 @@ void TIM3_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM3_IRQn 0 */
 	HAL_TIM_Base_Stop_IT(&htim1);
-	HAL_TIM_Base_Stop_IT(&htim2);
+//	HAL_TIM_Base_Stop_IT(&htim2);
+	uint8_t error;
   /* USER CODE END TIM3_IRQn 0 */
   HAL_TIM_IRQHandler(&htim3);
   /* USER CODE BEGIN TIM3_IRQn 1 */
-  HAL_Delay(1000);
-	while(HAL_I2C_Mem_Write(&hi2c1,CCS811_Address,STATUS,0,&CCS811_Data,0,1000)!=HAL_OK);
-	while(HAL_I2C_Master_Receive(&hi2c1,CCS811_Address,&CCS811_Data,1,1000)!=HAL_OK);
-	if(CCS811_Data[0] & 0x8)
-	{
-		while(HAL_I2C_Mem_Write(&hi2c1,CCS811_Address,ALG_Result_Data,1,&CCS811_Data,0,1000)!=HAL_OK);
-		while(HAL_I2C_Master_Receive(&hi2c1,CCS811_Address,&CCS811_Data,8,1000)!=HAL_OK);
-	}
-	co2=(CCS811_Data[0]<<8)+CCS811_Data[1];
-	HAL_TIM_Base_Start_IT(&htim1);
-	HAL_TIM_Base_Start_IT(&htim2);
+  HAL_Delay(100);
+  while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,STATUS,0,&CCS811_Data,0,1000)!=HAL_OK);
+  while(HAL_I2C_Master_Receive(&hi2c3,CCS811_Address,&CCS811_Data,1,1000)!=HAL_OK);
+  if(CCS811_Data[0] & 0x8)
+  {
+	  while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,ALG_Result_Data,1,&CCS811_Data,0,1000)!=HAL_OK);
+	  while(HAL_I2C_Master_Receive(&hi2c3,CCS811_Address,&CCS811_Data,8,1000)!=HAL_OK);
+  }
+  while(HAL_I2C_Mem_Read(&hi2c3,CCS811_Address,ERROR_ID_REG,1,&error,1,1000)!=HAL_OK);
+  co2=(CCS811_Data[0]<<8)+CCS811_Data[1];
+  HAL_TIM_Base_Start_IT(&htim1);
+//  HAL_TIM_Base_Start_IT(&htim2);
   /* USER CODE END TIM3_IRQn 1 */
 }
 

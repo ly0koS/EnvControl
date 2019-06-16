@@ -142,6 +142,7 @@ void Error_Handler(void);
 #define STATUS 0x00
 #define MEAS_Mode_Reg 0x01
 #define ALG_Result_Data 0x02
+#define ERROR_ID_REG  0xE0
 #define ENV_Data 0x05
 /* CCS811 END Private defines */
 #define I2C2_SDA_Pin GPIO_PIN_0
