@@ -115,11 +115,14 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
 //  MX_FSMC_Init();
-  MX_I2C1_Init();
-//  MX_I2C2_Init();
-  MX_I2C3_Init();
   MX_TIM1_Init();
 //  MX_TIM2_Init();
+  MX_TIM3_Init();
+  MX_I2C1_Init();
+  MX_I2C2_Init();
+//  MX_I2C3_Init();
+  MX_TIM1_Init();
+  MX_TIM2_Init();
   MX_TIM3_Init();
 //  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
@@ -214,10 +217,12 @@ static void MX_I2C1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C1_Init 2 */
-  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xA8,2,&temp,sizeof(temp),10000)!=HAL_OK);
+//  HAL_GPIO_WritePin(GPIOB,I2C1_SDA_Pin,GPIO_PIN_RESET);
+  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xA8,2,&temp,sizeof(temp),1000)!=HAL_OK);
   temp[0]=0x08;
   temp[1]=0x00;
-  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xE1,2,&temp,sizeof(temp),10000)!=HAL_OK);
+  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xE1,2,&temp,sizeof(temp),1000)!=HAL_OK);
+
   /* USER CODE END I2C1_Init 2 */
 
 }
@@ -565,7 +570,14 @@ static void MX_FSMC_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void delay(uint8_t k)
+{
+	uint8_t j;
+	while(k--)
+	{
+		for(j=0;j<1000;j++);
+	}
+}
 /* USER CODE END 4 */
 
 /**
