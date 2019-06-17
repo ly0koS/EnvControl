@@ -222,7 +222,7 @@ static void MX_I2C1_Init(void)
   temp[0]=0x08;
   temp[1]=0x00;
   while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xE1,2,&temp,sizeof(temp),1000)!=HAL_OK);
-
+  delay(100);
   /* USER CODE END I2C1_Init 2 */
 
 }
@@ -258,7 +258,7 @@ static void MX_I2C2_Init(void)
   /* USER CODE BEGIN I2C2_Init 2 */
   while(HAL_I2C_Master_Transmit(&hi2c1, GY30_Address,&GY30_POWERON,1,1000)!=HAL_OK);
   while(HAL_I2C_Master_Transmit(&hi2c1, GY30_Address,&GY30_CHRM, sizeof(GY30_CHRM),1000)!=HAL_OK);
-  HAL_Delay(180);
+  delay(180);
   /* USER CODE END I2C2_Init 2 */
 
 }
