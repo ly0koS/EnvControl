@@ -127,8 +127,8 @@ int main(void)
 //  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim1);
-//  HAL_TIM_Base_Start_IT(&htim2);
-  HAL_TIM_Base_Start_IT(&htim3);
+  HAL_TIM_Base_Start_IT(&htim2);
+//  HAL_TIM_Base_Start_IT(&htim3);
   HAL_UART_Transmit(&huart1,(uint8_t *)hello,sizeof(hello),100000);
   /* USER CODE END 2 */
 
@@ -137,9 +137,6 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  HAL_TIM_Base_Start_IT(&htim1);
-	//  HAL_TIM_Base_Start_IT(&htim2);
-	  HAL_TIM_Base_Start_IT(&htim3);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
