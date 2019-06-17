@@ -256,8 +256,8 @@ static void MX_I2C2_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C2_Init 2 */
-  while(HAL_I2C_Master_Transmit(&hi2c1, GY30_Address,&GY30_POWERON,1,1000)!=HAL_OK);
-  while(HAL_I2C_Master_Transmit(&hi2c1, GY30_Address,&GY30_CHRM, sizeof(GY30_CHRM),1000)!=HAL_OK);
+  while(HAL_I2C_Master_Transmit(&hi2c2, GY30_Address,&GY30_POWERON,1,1000)!=HAL_OK);
+  while(HAL_I2C_Master_Transmit(&hi2c2, GY30_Address,&GY30_CHRM, sizeof(GY30_CHRM),1000)!=HAL_OK);
   delay(180);
   /* USER CODE END I2C2_Init 2 */
 
@@ -575,7 +575,7 @@ void delay(uint8_t k)
 	uint8_t j;
 	while(k--)
 	{
-		for(j=0;j<1000;j++);
+		for(j=0;j<100;j++);
 	}
 }
 /* USER CODE END 4 */
