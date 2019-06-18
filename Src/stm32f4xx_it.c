@@ -211,8 +211,8 @@ void SysTick_Handler(void)
 void TIM1_UP_TIM10_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 0 */
-	HAL_TIM_Base_Stop(&htim2);
-	HAL_TIM_Base_Stop(&htim3);
+	HAL_TIM_Base_Stop_IT(&htim2);
+	HAL_TIM_Base_Stop_IT(&htim3);
 	uint8_t t[2]={0,0};
   /* USER CODE END TIM1_UP_TIM10_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
@@ -223,8 +223,8 @@ void TIM1_UP_TIM10_IRQHandler(void)
   temperture=temperture*200;
   temperture=temperture/(1<<20)-50;
   RH=((AHT10_Data[1] << 12) | (AHT10_Data[2] << 4) | (AHT10_Data[3] & 0xf0) >> 4) * 100/(1<<20);
-  HAL_TIM_Base_Start(&htim2);
-  HAL_TIM_Base_Start(&htim3);
+  HAL_TIM_Base_Start_IT(&htim2);
+  HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END TIM1_UP_TIM10_IRQn 1 */
 }
 
@@ -234,8 +234,8 @@ void TIM1_UP_TIM10_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM2_IRQn 0 */
-	HAL_TIM_Base_Stop(&htim1);
-	HAL_TIM_Base_Stop(&htim3);
+	HAL_TIM_Base_Stop_IT(&htim1);
+	HAL_TIM_Base_Stop_IT(&htim3);
   /* USER CODE END TIM2_IRQn 0 */
 	HAL_TIM_IRQHandler(&htim2);
   /* USER CODE BEGIN TIM2_IRQn 1 */
@@ -246,8 +246,7 @@ void TIM2_IRQHandler(void)
 	lt=GY30_Data[0];
 	lt=(lt<<8)+GY30_Data[1];
 	light=(float)lt/1.2;
-	HAL_TIM_Base_Start(&htim1);
-	HAL_TIM_Base_Start(&htim3);
+	HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END TIM2_IRQn 1 */
 }
 
@@ -257,9 +256,9 @@ void TIM2_IRQHandler(void)
 void TIM3_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM3_IRQn 0 */
-	uint8_t mode=0x00;
-	HAL_TIM_Base_Stop(&htim1);
-	HAL_TIM_Base_Stop(&htim2);
+	uint8_t mode=0x10;
+	HAL_TIM_Base_Stop_IT(&htim1);
+	HAL_TIM_Base_Stop_IT(&htim2);
 	uint8_t error;
   /* USER CODE END TIM3_IRQn 0 */
   HAL_TIM_IRQHandler(&htim3);
@@ -275,8 +274,8 @@ void TIM3_IRQHandler(void)
   }
   while(HAL_I2C_Mem_Read(&hi2c3,CCS811_Address,ERROR_ID_REG,1,&error,1,1000)!=HAL_OK);
   co2=(CCS811_Data[0]<<8)+CCS811_Data[1];
-  HAL_TIM_Base_Start(&htim1);
-  HAL_TIM_Base_Start(&htim2);
+  HAL_TIM_Base_Start_IT(&htim1);
+  HAL_TIM_Base_Start_IT(&htim2);
   /* USER CODE END TIM3_IRQn 1 */
 }
 
