@@ -114,21 +114,18 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-//  MX_FSMC_Init();
-  MX_TIM1_Init();
-//  MX_TIM2_Init();
-  MX_TIM3_Init();
+  MX_FSMC_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
-//  MX_I2C3_Init();
+  MX_I2C3_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
-//  MX_USART1_UART_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim1);
   HAL_TIM_Base_Start_IT(&htim2);
-//  HAL_TIM_Base_Start_IT(&htim3);
+  HAL_TIM_Base_Start_IT(&htim3);
   HAL_UART_Transmit(&huart1,(uint8_t *)hello,sizeof(hello),100000);
   /* USER CODE END 2 */
 
@@ -137,6 +134,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -219,7 +217,7 @@ static void MX_I2C1_Init(void)
   temp[0]=0x08;
   temp[1]=0x00;
   while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xE1,2,&temp,sizeof(temp),1000)!=HAL_OK);
-  delay(100);
+  delay(200);
   /* USER CODE END I2C1_Init 2 */
 
 }
@@ -254,8 +252,6 @@ static void MX_I2C2_Init(void)
   }
   /* USER CODE BEGIN I2C2_Init 2 */
   while(HAL_I2C_Master_Transmit(&hi2c2, GY30_Address,&GY30_POWERON,1,1000)!=HAL_OK);
-  while(HAL_I2C_Master_Transmit(&hi2c2, GY30_Address,&GY30_CHRM, sizeof(GY30_CHRM),1000)!=HAL_OK);
-  delay(180);
   /* USER CODE END I2C2_Init 2 */
 
 }
@@ -269,7 +265,10 @@ static void MX_I2C3_Init(void)
 {
 
   /* USER CODE BEGIN I2C3_Init 0 */
-	uint8_t mode=0x10;
+	uint8_t tp;
+	uint8_t r;
+	tp=(uint8_t)temperture;
+	r=(uint8_t)RH;
   /* USER CODE END I2C3_Init 0 */
 
   /* USER CODE BEGIN I2C3_Init 1 */
@@ -299,8 +298,7 @@ static void MX_I2C3_Init(void)
   while(HAL_I2C_Master_Receive(&hi2c3,CCS811_Address,&CCS811_Data,1,1000)!=HAL_OK);
   if(!(CCS811_Data[0] & 0x80))
 	  return HAL_ERROR;
-  while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,MEAS_Mode_Reg,1,&mode,1,1000)!=HAL_OK);
-  while(HAL_I2C_Mem_Read(&hi2c3,CCS811_Address,MEAS_Mode_Reg,1,&mode,1,1000)!=HAL_OK);
+
   /* USER CODE END I2C3_Init 2 */
 
 }

@@ -68,7 +68,7 @@ uint8_t GY30_CHRM;
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+void delay(uint8_t k);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
