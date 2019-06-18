@@ -59,6 +59,8 @@ float temperture;
 float RH;
 uint16_t co2;
 float light;
+uint8_t tp;
+uint8_t r;
 uint8_t i,j;
 uint8_t GY30_POWERON;
 uint8_t GY30_CHRM;
@@ -142,6 +144,7 @@ void delay(uint8_t k);
 #define STATUS 0x00
 #define MEAS_Mode_Reg 0x01
 #define ALG_Result_Data 0x02
+#define ENV_Data 0x05
 #define ERROR_ID_REG  0xE0
 #define ENV_Data 0x05
 /* CCS811 END Private defines */
