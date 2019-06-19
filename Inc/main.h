@@ -59,7 +59,6 @@ float temperture;
 float RH;
 uint16_t co2;
 float light;
-uint8_t tp;
 uint8_t r;
 uint8_t i,j;
 uint8_t GY30_POWERON;

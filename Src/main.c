@@ -36,6 +36,9 @@ uint8_t j=0x00;
 float temperture;
 float RH;
 float light;
+char tp[2];
+char hum[3];
+char lg[4];
 uint8_t AHT10_CalibrateCmd[3]={0xA8, 0x08, 0x00};
 uint8_t AHT10_MeasureCmd[3]={0xAC, 0x33, 0x00};
 uint16_t co2=0x00;
@@ -102,6 +105,9 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+  uint8_t x1;
+  uint8_t x2;
+  uint16_t x3;
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -116,18 +122,19 @@ int main(void)
   MX_FSMC_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
-  MX_I2C3_Init();
+//  MX_I2C3_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
-  MX_TIM3_Init();
+//  MX_TIM3_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim1);
   HAL_TIM_Base_Start_IT(&htim2);
-  HAL_TIM_Base_Start_IT(&htim3);
+//  HAL_TIM_Base_Start_IT(&htim3);
   HAL_UART_Transmit(&huart1,(uint8_t *)hello,sizeof(hello),100000);
   LCD_Init();
   LCD_DisplayOn();
+  POINT_COLOR=RED;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -135,9 +142,18 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  x1=(uint8_t)temperture;
+	  x2=(uint8_t)RH;
+	  x3=(uint16_t)light;
+	  sprintf(tp,"%d",x1);
+	  sprintf(hum,"%d",x2);
+	  sprintf(lg,"%d",x3);
+	  hum[2]="%";
+	  LCD_DisplayString(0,50,200,200,24,(uint8_t *)tp);
+	  LCD_DisplayString(0,100,200,200,24,(uint8_t *)hum);
+	  LCD_DisplayString(0,150,200,200,24,(uint8_t *)lg);
     /* USER CODE BEGIN 3 */
-	  }
+  }
   /* USER CODE END 3 */
 }
 
@@ -483,13 +499,23 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOE_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_15, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(nWake_GPIO_Port, nWake_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin : PB15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pin : nWake_Pin */
   GPIO_InitStruct.Pin = nWake_Pin;
