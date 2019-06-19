@@ -450,8 +450,8 @@ static void HAL_FSMC_MspInit(void){
   */
   GPIO_InitStruct.Pin = FSMC_A6_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   GPIO_InitStruct.Alternate = GPIO_AF12_FSMC;
   HAL_GPIO_Init(FSMC_A6_GPIO_Port, &GPIO_InitStruct);
 
@@ -459,8 +459,8 @@ static void HAL_FSMC_MspInit(void){
                           |FSMC_D8_Pin|FSMC_D9_Pin|FSMC_D10_Pin|FSMC_D11_Pin 
                           |FSMC_D12_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   GPIO_InitStruct.Alternate = GPIO_AF12_FSMC;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
@@ -468,15 +468,15 @@ static void HAL_FSMC_MspInit(void){
                           |FSMC_D1_Pin|FSMC_D2_Pin|FSMC_D3_Pin|FSMC_D17_Pin 
                           |FSMC_D18_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   GPIO_InitStruct.Alternate = GPIO_AF12_FSMC;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   GPIO_InitStruct.Pin = FSMC_D16_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
   GPIO_InitStruct.Alternate = GPIO_AF12_FSMC;
   HAL_GPIO_Init(FSMC_D16_GPIO_Port, &GPIO_InitStruct);
 
