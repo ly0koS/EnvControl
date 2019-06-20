@@ -195,8 +195,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
-
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
   {
     Error_Handler();
   }
@@ -567,16 +566,16 @@ static void MX_FSMC_Init(void)
   Timing.AddressHoldTime = 15;
   Timing.DataSetupTime = 24;
   Timing.BusTurnAroundDuration = 0;
-  Timing.CLKDivision = 16;
-  Timing.DataLatency = 17;
+  Timing.CLKDivision = 0;
+  Timing.DataLatency = 0;
   Timing.AccessMode = FSMC_ACCESS_MODE_A;
   /* ExtTiming */
   ExtTiming.AddressSetupTime = 8;
-  ExtTiming.AddressHoldTime = 15;
+  ExtTiming.AddressHoldTime = 0;
   ExtTiming.DataSetupTime = 8;
   ExtTiming.BusTurnAroundDuration = 0;
-  ExtTiming.CLKDivision = 16;
-  ExtTiming.DataLatency = 17;
+  ExtTiming.CLKDivision = 0;
+  ExtTiming.DataLatency = 0;
   ExtTiming.AccessMode = FSMC_ACCESS_MODE_A;
 
   if (HAL_SRAM_Init(&hsram1, &Timing, &ExtTiming) != HAL_OK)
