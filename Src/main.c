@@ -23,7 +23,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -34,15 +33,17 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 uint8_t j=0x00;
-uint8_t temperture;
-uint8_t RH;
-uint8_t light;
-uint8_t AHT10_CalibrateCmd[3]={0xE1, 0x08, 0x00};
+float temperture;
+float RH;
+float light;
+char tp[2];
+char hum[3];
+char lg[4];
+uint8_t AHT10_CalibrateCmd[3]={0xA8, 0x08, 0x00};
 uint8_t AHT10_MeasureCmd[3]={0xAC, 0x33, 0x00};
-uint8_t co2=0x00;
+uint16_t co2=0x00;
 uint8_t GY30_POWERON=0x01;
 uint8_t GY30_CHRM=0x10;
-uint16_t SGP30_init=0x2003;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -104,7 +105,9 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  uint8_t x1;
+  uint8_t x2;
+  uint16_t x3;
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -119,13 +122,20 @@ int main(void)
   MX_FSMC_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
-  MX_I2C3_Init();
+//  MX_I2C3_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+  HAL_TIM_Base_Start_IT(&htim1);
+  HAL_TIM_Base_Start_IT(&htim2);
+//  HAL_TIM_Base_Start_IT(&htim3);
   HAL_UART_Transmit(&huart1,(uint8_t *)hello,sizeof(hello),100000);
+  LCD_Init();
+  LCD_DisplayOn();
+  LCD_Display_Dir(1);
+  POINT_COLOR=RED;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -133,7 +143,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  if(co2>450)
+    /* USER CODE BEGIN 3 */
+    if(co2>450)
 		  HAL_GPIO_WritePin(GPIOE, fan1_Pin, GPIO_PIN_SET);
 	  else
 		  HAL_GPIO_WritePin(GPIOE, fan1_Pin, GPIO_PIN_RESET);
@@ -157,8 +168,19 @@ int main(void)
 		  HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_SET);
 	  else
 		  HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_RESET);
-
-    /* USER CODE BEGIN 3 */
+	  x1=(uint8_t)temperture;
+	  x2=(uint8_t)RH;
+	  x3=(uint16_t)light;
+	  sprintf(tp,"%d",x1);
+	  sprintf(hum,"%d",x2);
+	  sprintf(lg,"%4d",x3);
+	  LCD_DisplayString(0,10,200,200,24,"Temperture:");
+	  LCD_DisplayString(135,10,200,200,24,(uint8_t *)tp);
+	  LCD_DisplayString(75,50,200,200,24,"RH:");
+	  LCD_DisplayString(125,50,200,200,24,(uint8_t *)hum);
+	  LCD_DisplayString(25,90,96,96,24,"Light:");
+	  LCD_DisplayString(100,90,96,96,24,(uint8_t *)lg);
+	  HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }
@@ -215,7 +237,7 @@ static void MX_I2C1_Init(void)
 {
 
   /* USER CODE BEGIN I2C1_Init 0 */
-
+	uint8_t temp[2]={0,0};
   /* USER CODE END I2C1_Init 0 */
 
   /* USER CODE BEGIN I2C1_Init 1 */
@@ -224,7 +246,7 @@ static void MX_I2C1_Init(void)
   hi2c1.Instance = I2C1;
   hi2c1.Init.ClockSpeed = 100000;
   hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.OwnAddress1 = 112;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
   hi2c1.Init.OwnAddress2 = 0;
@@ -235,10 +257,12 @@ static void MX_I2C1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C1_Init 2 */
-  for(i=0;i<3;i++)
-  {
-	  HAL_I2C_Master_Transmit(&hi2c1, AHT10_Address,&AHT10_CalibrateCmd[i], sizeof(AHT10_CalibrateCmd[i]),10000);
-  }
+//  HAL_GPIO_WritePin(GPIOB,I2C1_SDA_Pin,GPIO_PIN_RESET);
+  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xA8,2,&temp,sizeof(temp),1000)!=HAL_OK);
+  temp[0]=0x08;
+  temp[1]=0x00;
+  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xE1,2,&temp,sizeof(temp),1000)!=HAL_OK);
+  delay(200);
   /* USER CODE END I2C1_Init 2 */
 
 }
@@ -261,7 +285,7 @@ static void MX_I2C2_Init(void)
   hi2c2.Instance = I2C2;
   hi2c2.Init.ClockSpeed = 100000;
   hi2c2.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  hi2c2.Init.OwnAddress1 = 0;
+  hi2c2.Init.OwnAddress1 = 140;
   hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
   hi2c2.Init.OwnAddress2 = 0;
@@ -272,8 +296,7 @@ static void MX_I2C2_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C2_Init 2 */
-  HAL_I2C_Master_Transmit(&hi2c2, GY30_Address,&GY30_POWERON, sizeof(GY30_POWERON),10000);
-  HAL_I2C_Master_Transmit(&hi2c2, GY30_Address,&GY30_CHRM, sizeof(GY30_CHRM),10000);
+  while(HAL_I2C_Master_Transmit(&hi2c2, GY30_Address,&GY30_POWERON,1,1000)!=HAL_OK);
   /* USER CODE END I2C2_Init 2 */
 
 }
@@ -287,7 +310,6 @@ static void MX_I2C3_Init(void)
 {
 
   /* USER CODE BEGIN I2C3_Init 0 */
-
   /* USER CODE END I2C3_Init 0 */
 
   /* USER CODE BEGIN I2C3_Init 1 */
@@ -296,7 +318,7 @@ static void MX_I2C3_Init(void)
   hi2c3.Instance = I2C3;
   hi2c3.Init.ClockSpeed = 100000;
   hi2c3.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  hi2c3.Init.OwnAddress1 = 0;
+  hi2c3.Init.OwnAddress1 = 176;
   hi2c3.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c3.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
   hi2c3.Init.OwnAddress2 = 0;
@@ -307,7 +329,17 @@ static void MX_I2C3_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN I2C3_Init 2 */
-  HAL_I2C_Master_Transmit(&hi2c3,SGP30_Address,&SGP30_init, sizeof(SGP30_init),10000);
+  HAL_GPIO_WritePin(GPIOC,nWake_Pin,GPIO_PIN_RESET);
+  while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,0x00,0,CCS811_Data,0,1000)!=HAL_OK);
+  while(HAL_I2C_Master_Receive(&hi2c3,CCS811_Address,&CCS811_Data,1,1000)!=HAL_OK);
+  if(!(CCS811_Data[0] & 0x10))
+	  return HAL_ERROR;
+  while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,0xF4,1,CCS811_Data,0,1000)!=HAL_OK);
+  while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,0x00,0,CCS811_Data,0,1000)!=HAL_OK);
+  while(HAL_I2C_Master_Receive(&hi2c3,CCS811_Address,&CCS811_Data,1,1000)!=HAL_OK);
+  if(!(CCS811_Data[0] & 0x80))
+	  return HAL_ERROR;
+
   /* USER CODE END I2C3_Init 2 */
 
 }
@@ -333,7 +365,7 @@ static void MX_TIM1_Init(void)
   htim1.Instance = TIM1;
   htim1.Init.Prescaler = 50000;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 50400;
+  htim1.Init.Period = 5040;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -377,9 +409,9 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 50000;
+  htim2.Init.Prescaler = 2000;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 42000;
+  htim2.Init.Period = 6000;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -424,9 +456,9 @@ static void MX_TIM3_Init(void)
   htim3.Instance = TIM3;
   htim3.Init.Prescaler = 65000;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 64615;
+  htim3.Init.Period = 30000;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
   {
     Error_Handler();
@@ -494,10 +526,28 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
-  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_15, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(nWake_GPIO_Port, nWake_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin : PB15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : nWake_Pin */
+  GPIO_InitStruct.Pin = nWake_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(nWake_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOE, temp_Pin|RH_Pin|light_Pin|fan1_Pin 
@@ -576,7 +626,14 @@ static void MX_FSMC_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void delay(uint8_t k)
+{
+	uint8_t j;
+	while(k--)
+	{
+		for(j=0;j<100;j++);
+	}
+}
 /* USER CODE END 4 */
 
 /**
@@ -609,3 +666,6 @@ void assert_failed(uint8_t *file, uint32_t line)
 #endif /* USE_FULL_ASSERT */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+=======
+/* USER CODE BEGIN Header */
+/**

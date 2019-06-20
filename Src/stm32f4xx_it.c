@@ -211,23 +211,16 @@ void SysTick_Handler(void)
 void TIM1_UP_TIM10_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 0 */
-	HAL_TIM_Base_Stop_IT(&htim2);
-	HAL_TIM_Base_Stop_IT(&htim3);
+	uint8_t t[2]={0,0};
   /* USER CODE END TIM1_UP_TIM10_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 1 */
-  for(i=0;i<3;i++)
-  {
-	  HAL_I2C_Master_Transmit(&hi2c1,AHT10_Address,&AHT10_MeasureCmd[i],sizeof(AHT10_MeasureCmd[i]),10000);		//发送获取数值指令
-  }
-  HAL_Delay(1000);
-  HAL_I2C_Master_Receive(&hi2c1,AHT10_Address,&AHT10_Data,sizeof(AHT10_Data),10000);
-  temperture=((AHT10_Data[1] << 16) | (AHT10_Data[2] << 8) | AHT10_Data[3]) >> 4;
-  temperture=temperture * 100 / 1048576;
-  RH=((AHT10_Data[3] & 0x0F) << 16) | (AHT10_Data[4] << 8) | AHT10_Data[5];
-  RH=((200 * RH) / 1048576) - 50;
-  HAL_TIM_Base_Start_IT(&htim2);
-  HAL_TIM_Base_Start_IT(&htim3);
+  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xAC,2,t,sizeof(t),1000)!=HAL_OK);		//发�?�获取数值指�???????
+  while(HAL_I2C_Master_Receive(&hi2c1,AHT10_Address,AHT10_Data,6,1000)!=HAL_OK);
+  temperture=(AHT10_Data[3] & 0x0F) << 16 | AHT10_Data[4] << 8 | AHT10_Data[5];
+  temperture=temperture*200;
+  temperture=temperture/(1<<20)-50;
+  RH=((AHT10_Data[1] << 12) | (AHT10_Data[2] << 4) | (AHT10_Data[3] & 0xf0) >> 4) * 100/(1<<20);
   /* USER CODE END TIM1_UP_TIM10_IRQn 1 */
 }
 
@@ -237,19 +230,16 @@ void TIM1_UP_TIM10_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM2_IRQn 0 */
-	HAL_TIM_Base_Stop_IT(&htim1);
-	HAL_TIM_Base_Stop_IT(&htim3);
   /* USER CODE END TIM2_IRQn 0 */
   HAL_TIM_IRQHandler(&htim2);
   /* USER CODE BEGIN TIM2_IRQn 1 */
-  for(i=0;i<3;i++)
-  {
-	  HAL_I2C_Master_Receive(&hi2c2,GY30_Address,&GY30_Data[i],sizeof(GY30_Data[i]),10000);
-  }
-  light=GY30_Data[0];
-  light=(light<<8)+GY30_Data[1];
-  HAL_TIM_Base_Start_IT(&htim1);
-  HAL_TIM_Base_Start_IT(&htim3);
+    uint16_t lt;
+    while(HAL_I2C_Master_Transmit(&hi2c2, GY30_Address,&GY30_CHRM, sizeof(GY30_CHRM),1000)!=HAL_OK);
+    delay(180);
+	while(HAL_I2C_Master_Receive(&hi2c2,GY30_Address,&GY30_Data,2,1000)!=HAL_OK);
+	lt=GY30_Data[0];
+	lt=(lt<<8)+GY30_Data[1];
+	light=(float)lt/1.2;
   /* USER CODE END TIM2_IRQn 1 */
 }
 
@@ -259,50 +249,27 @@ void TIM2_IRQHandler(void)
 void TIM3_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM3_IRQn 0 */
-	uint8_t temp=0xFF;
-	uint8_t crc=0xFF;
-	uint8_t crc_init=0xFF;														//CRC初始值
-	uint8_t crc_bit;
-	j=j+1;
-	HAL_TIM_Base_Stop_IT(&htim1);
-	HAL_TIM_Base_Stop_IT(&htim2);
+	uint8_t mode=0x10;
+	uint8_t error;
+	uint8_t correct[2];
+	correct[0]=(uint8_t)(temperture+25)<<1;
+	correct[1]=(uint8_t)RH<<1;
   /* USER CODE END TIM3_IRQn 0 */
   HAL_TIM_IRQHandler(&htim3);
   /* USER CODE BEGIN TIM3_IRQn 1 */
-  if(j>=16)
+  while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,ENV_Data,2,&correct,2,1000)!=HAL_OK);
+  while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,MEAS_Mode_Reg,1,&mode,1,1000)!=HAL_OK);
+  while(HAL_I2C_Mem_Read(&hi2c3,CCS811_Address,MEAS_Mode_Reg,1,&mode,1,1000)!=HAL_OK);
+  delay(1000);
+  while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,STATUS,0,&CCS811_Data,0,1000)!=HAL_OK);
+  while(HAL_I2C_Master_Receive(&hi2c3,CCS811_Address,&CCS811_Data,1,1000)!=HAL_OK);
+  if(CCS811_Data[0] & 0x8)
   {
-	  HAL_I2C_Master_Receive(&hi2c3,SGP30_Address,&SGP30_Data,24,10000);
-	  SGP30_Data=SGP30_Data>>8;													//将空的低8位0移除
-	  crc&=SGP30_Data;															//取8位校验位
-	  SGP30_Data=SGP30_Data>>8;													//将低8位的CRC移除
-	  temp&=SGP30_Data;															//取8位化学污染浓度
-	  SGP30_Data=SGP30_Data>>8;													//将低8位的化学污染浓度移除
-	  co2&=SGP30_Data;															//取8位二氧化碳浓度
-	  crc_init ^= co2;
-	  for(crc_bit=8;crc_bit>0;--crc_bit)
-	  {
-		  if(crc_init&0x80)
-			  crc_init=(crc_init<<1)^0x31;										//0x31校验多项式
-		  else
-			  crc_init=(crc_init<<1);
-	  }
-	  crc_init ^= temp;
-	  for(crc_bit=8;crc_bit>0;--crc_bit)
-	  {
-		  if(crc_init&0x80)
-			  crc_init=(crc_init<<1)^0x31;										//0x31校验多项式
-		  else
-			  crc_init=(crc_init<<1);
-	  }
-	  if(crc_init!=crc)
-	  {
-		  co2=0x00;
-		  temp=0x00;
-	  }
-	  j=15;
-	HAL_TIM_Base_Start_IT(&htim1);
-	HAL_TIM_Base_Start_IT(&htim2);
+	  while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,ALG_Result_Data,1,&CCS811_Data,0,1000)!=HAL_OK);
+	  while(HAL_I2C_Master_Receive(&hi2c3,CCS811_Address,&CCS811_Data,8,1000)!=HAL_OK);
   }
+  while(HAL_I2C_Mem_Read(&hi2c3,CCS811_Address,ERROR_ID_REG,1,&error,1,1000)!=HAL_OK);
+  co2=(CCS811_Data[0]<<8)+CCS811_Data[1];
   /* USER CODE END TIM3_IRQn 1 */
 }
 
@@ -313,14 +280,14 @@ void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
 	HAL_Delay(500);
-	HAL_UART_Transmit(&huart1,(uint8_t *)temperture,sizeof(temperture),10000);
+//	HAL_UART_Transmit(&huart1,temperture,sizeof(temperture),10000);
 	HAL_Delay(500);
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
-	HAL_UART_Transmit(&huart1,(uint8_t *)RH,sizeof(RH),10000);
+//	HAL_UART_Transmit(&huart1,(uint8_t *)RH,sizeof(RH),10000);
 	HAL_Delay(500);
-	HAL_UART_Transmit(&huart1,(uint8_t *)light,sizeof(light),10000);
+//	HAL_UART_Transmit(&huart1,(uint8_t *)light,sizeof(light),10000);
   /* USER CODE END USART1_IRQn 1 */
 }
 
