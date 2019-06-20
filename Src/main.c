@@ -150,7 +150,7 @@ int main(void)
 	  x3=(uint16_t)light;
 	  sprintf(tp,"%d",x1);
 	  sprintf(hum,"%d",x2);
-	  sprintf(lg,"%d",x3);
+	  sprintf(lg,"%4d",x3);
 	  LCD_DisplayString(0,50,200,200,16,(uint8_t *)tp);
 	  LCD_DisplayString(0,100,200,200,16,(uint8_t *)hum);
 	  LCD_DisplayString(0,150,200,200,24,(uint8_t *)lg);
