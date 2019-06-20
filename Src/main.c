@@ -125,7 +125,7 @@ int main(void)
 //  MX_I2C3_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
-//  MX_TIM3_Init();
+  MX_TIM3_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim1);
@@ -134,6 +134,7 @@ int main(void)
   HAL_UART_Transmit(&huart1,(uint8_t *)hello,sizeof(hello),100000);
   LCD_Init();
   LCD_DisplayOn();
+  LCD_Display_Dir(1);
   POINT_COLOR=RED;
   /* USER CODE END 2 */
 
@@ -142,17 +143,18 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
 	  x1=(uint8_t)temperture;
 	  x2=(uint8_t)RH;
 	  x3=(uint16_t)light;
 	  sprintf(tp,"%d",x1);
 	  sprintf(hum,"%d",x2);
 	  sprintf(lg,"%d",x3);
-	  hum[2]="%";
-	  LCD_DisplayString(0,50,200,200,24,(uint8_t *)tp);
-	  LCD_DisplayString(0,100,200,200,24,(uint8_t *)hum);
+	  LCD_DisplayString(0,50,200,200,16,(uint8_t *)tp);
+	  LCD_DisplayString(0,100,200,200,16,(uint8_t *)hum);
 	  LCD_DisplayString(0,150,200,200,24,(uint8_t *)lg);
-    /* USER CODE BEGIN 3 */
+	  HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }
@@ -337,7 +339,7 @@ static void MX_TIM1_Init(void)
   htim1.Instance = TIM1;
   htim1.Init.Prescaler = 50000;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 50400;
+  htim1.Init.Period = 5040;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -381,9 +383,9 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 50000;
+  htim2.Init.Prescaler = 2000;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 21000;
+  htim2.Init.Period = 6000;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -428,7 +430,7 @@ static void MX_TIM3_Init(void)
   htim3.Instance = TIM3;
   htim3.Init.Prescaler = 65000;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 10000;
+  htim3.Init.Period = 30000;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
