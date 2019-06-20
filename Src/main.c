@@ -135,7 +135,7 @@ int main(void)
   LCD_Init();
   LCD_DisplayOn();
   LCD_Display_Dir(1);
-  POINT_COLOR=RED;
+  POINT_COLOR=BLUE;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -143,44 +143,45 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
     if(co2>450)
-		  HAL_GPIO_WritePin(GPIOE, fan1_Pin, GPIO_PIN_SET);
-	  else
-		  HAL_GPIO_WritePin(GPIOE, fan1_Pin, GPIO_PIN_RESET);
-	  if(temperture<18)
-		  HAL_GPIO_WritePin(GPIOE, temp_Pin, GPIO_PIN_SET);
-	  else
-		  HAL_GPIO_WritePin(GPIOE, temp_Pin, GPIO_PIN_RESET);
-	  if(temperture>29)
-		  HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_SET);
-	  else
-		  HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_RESET);
-	  if(light>200)
-		  HAL_GPIO_WritePin(GPIOE, light_Pin, GPIO_PIN_SET);
-	  else
-		  HAL_GPIO_WritePin(GPIOE, light_Pin, GPIO_PIN_RESET);
-	  if(RH<40)
-		  HAL_GPIO_WritePin(GPIOE, RH_Pin, GPIO_PIN_SET);
-	  else
-		  HAL_GPIO_WritePin(GPIOE, RH_Pin, GPIO_PIN_RESET);
-	  if(RH>75)
-		  HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_SET);
-	  else
-		  HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_RESET);
-	  x1=(uint8_t)temperture;
-	  x2=(uint8_t)RH;
-	  x3=(uint16_t)light;
-	  sprintf(tp,"%d",x1);
-	  sprintf(hum,"%d",x2);
-	  sprintf(lg,"%4d",x3);
-	  LCD_DisplayString(0,10,200,200,24,"Temperture:");
-	  LCD_DisplayString(135,10,200,200,24,(uint8_t *)tp);
-	  LCD_DisplayString(75,50,200,200,24,"RH:");
-	  LCD_DisplayString(125,50,200,200,24,(uint8_t *)hum);
-	  LCD_DisplayString(25,90,96,96,24,"Light:");
-	  LCD_DisplayString(100,90,96,96,24,(uint8_t *)lg);
-	  HAL_Delay(100);
+    	HAL_GPIO_WritePin(GPIOE, fan1_Pin, GPIO_PIN_SET);
+	else
+		HAL_GPIO_WritePin(GPIOE, fan1_Pin, GPIO_PIN_RESET);
+	if(temperture<18)
+		HAL_GPIO_WritePin(GPIOE, temp_Pin, GPIO_PIN_SET);
+	else
+		HAL_GPIO_WritePin(GPIOE, temp_Pin, GPIO_PIN_RESET);
+	if(temperture>29)
+		HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_SET);
+	else
+		HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_RESET);
+	if(light>200)
+		HAL_GPIO_WritePin(GPIOE, light_Pin, GPIO_PIN_SET);
+	else
+		HAL_GPIO_WritePin(GPIOE, light_Pin, GPIO_PIN_RESET);
+	if(RH<40)
+		HAL_GPIO_WritePin(GPIOE, RH_Pin, GPIO_PIN_SET);
+	else
+		HAL_GPIO_WritePin(GPIOE, RH_Pin, GPIO_PIN_RESET);
+	if(RH>75)
+		HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_SET);
+	else
+		HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_RESET);
+	x1=(uint8_t)temperture;
+	x2=(uint8_t)RH;
+	x3=(uint16_t)light;
+	sprintf(tp,"%d",x1);
+	sprintf(hum,"%d",x2);
+	sprintf(lg,"%4d",x3);
+	LCD_DisplayString(85,10,200,200,24,"Temperture:");
+	LCD_DisplayString(215,10,200,200,24,(uint8_t *)tp);
+	LCD_DisplayString(175,50,200,200,24,"RH:");
+	LCD_DisplayString(215,50,200,200,24,(uint8_t *)hum);
+	LCD_DisplayString(85,90,96,96,24,"Light:");
+	LCD_DisplayString(195,90,96,96,24,(uint8_t *)lg);
+	HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }
@@ -524,16 +525,32 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOE_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOF_CLK_ENABLE();
+  __HAL_RCC_GPIOH_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOG_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOE, temp_Pin|RH_Pin|light_Pin|fan1_Pin 
+                          |fan2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_15, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(nWake_GPIO_Port, nWake_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pins : temp_Pin RH_Pin light_Pin fan1_Pin 
+                           fan2_Pin */
+  GPIO_InitStruct.Pin = temp_Pin|RH_Pin|light_Pin|fan1_Pin 
+                          |fan2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PB15 */
   GPIO_InitStruct.Pin = GPIO_PIN_15;
@@ -548,19 +565,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(nWake_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, temp_Pin|RH_Pin|light_Pin|fan1_Pin 
-                          |fan2_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pins : temp_Pin RH_Pin light_Pin fan1_Pin 
-                           fan2_Pin */
-  GPIO_InitStruct.Pin = temp_Pin|RH_Pin|light_Pin|fan1_Pin 
-                          |fan2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
 }
 
@@ -666,6 +670,3 @@ void assert_failed(uint8_t *file, uint32_t line)
 #endif /* USE_FULL_ASSERT */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-=======
-/* USER CODE BEGIN Header */
-/**
