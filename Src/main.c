@@ -151,9 +151,9 @@ int main(void)
 	  sprintf(tp,"%d",x1);
 	  sprintf(hum,"%d",x2);
 	  sprintf(lg,"%4d",x3);
-	  LCD_DisplayString(0,50,200,200,16,(uint8_t *)tp);
-	  LCD_DisplayString(0,100,200,200,16,(uint8_t *)hum);
-	  LCD_DisplayString(0,150,200,200,24,(uint8_t *)lg);
+	  LCD_DisplayString(125,50,200,200,24,(uint8_t *)tp);
+	  LCD_DisplayString(125,100,200,200,24,(uint8_t *)hum);
+	  LCD_DisplayString(100,150,96,96,24,(uint8_t *)lg);
 	  HAL_Delay(100);
   }
   /* USER CODE END 3 */
