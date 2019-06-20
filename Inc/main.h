@@ -73,6 +73,16 @@ void delay(uint8_t k);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define temp_Pin GPIO_PIN_2
+#define temp_GPIO_Port GPIOE
+#define RH_Pin GPIO_PIN_3
+#define RH_GPIO_Port GPIOE
+#define light_Pin GPIO_PIN_4
+#define light_GPIO_Port GPIOE
+#define fan1_Pin GPIO_PIN_5
+#define fan1_GPIO_Port GPIOE
+#define fan2_Pin GPIO_PIN_6
+#define fan2_GPIO_Port GPIOE
 #define I2C2_SDA_Pin GPIO_PIN_0
 #define I2C2_SDA_GPIO_Port GPIOF
 #define I2C2_SCL_Pin GPIO_PIN_1
