@@ -39,10 +39,10 @@ float light;
 char tp[2];
 char hum[3];
 char lg[4];
-char co[4];
+char co[3];
 uint8_t AHT10_CalibrateCmd[3]={0xA8, 0x08, 0x00};
 uint8_t AHT10_MeasureCmd[3]={0xAC, 0x33, 0x00};
-uint16_t co2=0x00;
+uint16_t co2;
 uint8_t GY30_POWERON=0x01;
 uint8_t GY30_CHRM=0x10;
 /* USER CODE END PD */
@@ -176,7 +176,7 @@ int main(void)
 	sprintf(tp,"%d",x1);
 	sprintf(hum,"%d",x2);
 	sprintf(lg,"%4d",x3);
-	sprintf(co,"%4d",co2);
+	sprintf(co,"%3d",co2);
 	LCD_DisplayString(85,10,200,200,24,"Temperture:");
 	LCD_DisplayString(215,10,200,200,24,(uint8_t *)tp);
 	LCD_DisplayString(175,50,200,200,24,"RH:");
@@ -185,7 +185,13 @@ int main(void)
 	LCD_DisplayString(85,90,96,96,24,"Light:");
 	LCD_DisplayString(195,90,96,96,24,(uint8_t *)lg);
 	LCD_DisplayString(255,90,24,24,24,"lx");
-	LCD_DisplayString(200,120,200,200,24,(uint8_t *)co);
+	if(co2<1000)
+	{
+		LCD_DisplayString(200,130,96,96,24,(uint8_t *)co);
+		LCD_DisplayString(255,130,96,96,24,"ppm");
+	}
+	else
+		LCD_DisplayString(200,130,96,96,24,"!!!");
 	HAL_Delay(100);
   }
   /* USER CODE END 3 */
@@ -460,9 +466,9 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 65000;
+  htim3.Init.Prescaler = 15500;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 30000;
+  htim3.Init.Period = 15000;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
