@@ -179,8 +179,10 @@ int main(void)
 	LCD_DisplayString(215,10,200,200,24,(uint8_t *)tp);
 	LCD_DisplayString(175,50,200,200,24,"RH:");
 	LCD_DisplayString(215,50,200,200,24,(uint8_t *)hum);
+	LCD_DisplayString(255,50,24,24,24,"%");
 	LCD_DisplayString(85,90,96,96,24,"Light:");
 	LCD_DisplayString(195,90,96,96,24,(uint8_t *)lg);
+	LCD_DisplayString(255,90,24,24,24,"lx");
 	HAL_Delay(100);
   }
   /* USER CODE END 3 */

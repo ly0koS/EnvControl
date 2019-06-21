@@ -215,7 +215,7 @@ void TIM1_UP_TIM10_IRQHandler(void)
   /* USER CODE END TIM1_UP_TIM10_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 1 */
-  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xAC,2,t,sizeof(t),1000)!=HAL_OK);		//发�?�获取数值指�???????
+  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xAC,2,t,sizeof(t),1000)!=HAL_OK);		//发�?�获取数值指�???????
   while(HAL_I2C_Master_Receive(&hi2c1,AHT10_Address,AHT10_Data,6,1000)!=HAL_OK);
   temperture=(AHT10_Data[3] & 0x0F) << 16 | AHT10_Data[4] << 8 | AHT10_Data[5];
   temperture=temperture*200;
