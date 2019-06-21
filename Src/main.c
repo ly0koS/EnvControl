@@ -39,6 +39,7 @@ float light;
 char tp[2];
 char hum[3];
 char lg[4];
+char co[4];
 uint8_t AHT10_CalibrateCmd[3]={0xA8, 0x08, 0x00};
 uint8_t AHT10_MeasureCmd[3]={0xAC, 0x33, 0x00};
 uint16_t co2=0x00;
@@ -122,7 +123,7 @@ int main(void)
   MX_FSMC_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
-//  MX_I2C3_Init();
+  MX_I2C3_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
@@ -130,7 +131,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim1);
   HAL_TIM_Base_Start_IT(&htim2);
-//  HAL_TIM_Base_Start_IT(&htim3);
+  HAL_TIM_Base_Start_IT(&htim3);
   HAL_UART_Transmit(&huart1,(uint8_t *)hello,sizeof(hello),100000);
   LCD_Init();
   LCD_DisplayOn();
@@ -175,6 +176,7 @@ int main(void)
 	sprintf(tp,"%d",x1);
 	sprintf(hum,"%d",x2);
 	sprintf(lg,"%4d",x3);
+	sprintf(co,"%4d",co2);
 	LCD_DisplayString(85,10,200,200,24,"Temperture:");
 	LCD_DisplayString(215,10,200,200,24,(uint8_t *)tp);
 	LCD_DisplayString(175,50,200,200,24,"RH:");
@@ -183,6 +185,7 @@ int main(void)
 	LCD_DisplayString(85,90,96,96,24,"Light:");
 	LCD_DisplayString(195,90,96,96,24,(uint8_t *)lg);
 	LCD_DisplayString(255,90,24,24,24,"lx");
+	LCD_DisplayString(200,120,200,200,24,(uint8_t *)co);
 	HAL_Delay(100);
   }
   /* USER CODE END 3 */
