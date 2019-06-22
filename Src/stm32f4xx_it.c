@@ -215,7 +215,7 @@ void TIM1_UP_TIM10_IRQHandler(void)
   /* USER CODE END TIM1_UP_TIM10_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 1 */
-  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xAC,2,t,sizeof(t),1000)!=HAL_OK);		//发�?�获取数值指�??????????????
+  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xAC,2,t,sizeof(t),1000)!=HAL_OK);		//发�?�获取数值指�???????????????
   while(HAL_I2C_Master_Receive(&hi2c1,AHT10_Address,AHT10_Data,6,1000)!=HAL_OK);
   temperture=(AHT10_Data[3] & 0x0F) << 16 | AHT10_Data[4] << 8 | AHT10_Data[5];
   temperture=temperture*200;
@@ -263,11 +263,12 @@ void TIM3_IRQHandler(void)
   }
   while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,MEAS_Mode_Reg,1,&mode,1,1000)!=HAL_OK);
   while(HAL_I2C_Mem_Read(&hi2c3,CCS811_Address,MEAS_Mode_Reg,1,&mode,1,1000)!=HAL_OK);
-  delay(50000);
+  delay(40000);
   while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,STATUS,0,&CCS811_Data,0,1000)!=HAL_OK);
   while(HAL_I2C_Master_Receive(&hi2c3,CCS811_Address,&CCS811_Data,1,1000)!=HAL_OK);
   if(CCS811_Data[0] & 0x8)
   {
+	  delay(10000);
 	  while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,ALG_Result_Data,1,&CCS811_Data,0,1000)!=HAL_OK);
 	  while(HAL_I2C_Master_Receive(&hi2c3,CCS811_Address,&CCS811_Data,8,1000)!=HAL_OK);
   }

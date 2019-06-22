@@ -179,12 +179,13 @@ int main(void)
 	sprintf(co,"%3d",co2);
 	LCD_DisplayString(85,10,200,200,24,"Temperture:");
 	LCD_DisplayString(215,10,200,200,24,(uint8_t *)tp);
-	LCD_DisplayString(175,50,200,200,24,"RH:");
+	LCD_DisplayString(180,50,200,200,24,"RH:");
 	LCD_DisplayString(215,50,200,200,24,(uint8_t *)hum);
 	LCD_DisplayString(255,50,24,24,24,"%");
-	LCD_DisplayString(85,90,96,96,24,"Light:");
+	LCD_DisplayString(115,90,96,96,24,"Light:");
 	LCD_DisplayString(195,90,96,96,24,(uint8_t *)lg);
 	LCD_DisplayString(255,90,24,24,24,"lx");
+	LCD_DisplayString(155,130,96,96,24,"CO2:");
 	if(co2<1000)
 	{
 		LCD_DisplayString(200,130,96,96,24,(uint8_t *)co);
@@ -342,6 +343,7 @@ static void MX_I2C3_Init(void)
   }
   /* USER CODE BEGIN I2C3_Init 2 */
   HAL_GPIO_WritePin(GPIOC,nWake_Pin,GPIO_PIN_RESET);
+  delay(1000);
   while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,0x00,0,CCS811_Data,0,1000)!=HAL_OK);
   while(HAL_I2C_Master_Receive(&hi2c3,CCS811_Address,&CCS811_Data,1,1000)!=HAL_OK);
   if(!(CCS811_Data[0] & 0x10))
@@ -466,9 +468,9 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 15500;
+  htim3.Init.Prescaler = 65000;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 15000;
+  htim3.Init.Period = 64615;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
