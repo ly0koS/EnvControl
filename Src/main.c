@@ -159,9 +159,9 @@ int main(void)
 	else
 		HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_RESET);
 	if(light>200)
-		HAL_GPIO_WritePin(GPIOE, light_Pin, GPIO_PIN_SET);
-	else
 		HAL_GPIO_WritePin(GPIOE, light_Pin, GPIO_PIN_RESET);
+	else
+		HAL_GPIO_WritePin(GPIOE, light_Pin, GPIO_PIN_SET);
 	if(RH<40)
 		HAL_GPIO_WritePin(GPIOE, RH_Pin, GPIO_PIN_SET);
 	else
