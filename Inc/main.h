@@ -75,14 +75,16 @@ void delay(uint8_t k);
 /* Private defines -----------------------------------------------------------*/
 #define temp_Pin GPIO_PIN_2
 #define temp_GPIO_Port GPIOE
-#define RH_Pin GPIO_PIN_3
-#define RH_GPIO_Port GPIOE
+#define RH_Plus_Pin GPIO_PIN_3
+#define RH_Plus_GPIO_Port GPIOE
 #define light_Pin GPIO_PIN_4
 #define light_GPIO_Port GPIOE
 #define fan1_Pin GPIO_PIN_5
 #define fan1_GPIO_Port GPIOE
 #define fan2_Pin GPIO_PIN_6
 #define fan2_GPIO_Port GPIOE
+#define RH_Minus_Pin GPIO_PIN_13
+#define RH_Minus_GPIO_Port GPIOC
 #define I2C2_SDA_Pin GPIO_PIN_0
 #define I2C2_SDA_GPIO_Port GPIOF
 #define I2C2_SCL_Pin GPIO_PIN_1
@@ -137,6 +139,8 @@ void delay(uint8_t k);
 #define I2C1_SCL_GPIO_Port GPIOB
 #define I2C1_SDA_Pin GPIO_PIN_7
 #define I2C1_SDA_GPIO_Port GPIOB
+#define fan3_RH_Pin GPIO_PIN_1
+#define fan3_RH_GPIO_Port GPIOE
 /* USER CODE BEGIN Private defines */
 /* AHT10 BEGIN Private defines */
 #define AHT10_Address (0x38<<1)
