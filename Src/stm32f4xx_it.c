@@ -58,7 +58,6 @@
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
-extern UART_HandleTypeDef huart1;
 /* USER CODE BEGIN EV */
 	extern I2C_HandleTypeDef hi2c1;
 	extern I2C_HandleTypeDef hi2c2;
@@ -66,7 +65,6 @@ extern UART_HandleTypeDef huart1;
 	extern TIM_HandleTypeDef htim1;
 	extern TIM_HandleTypeDef htim2;
 	extern TIM_HandleTypeDef htim3;
-	extern UART_HandleTypeDef huart1;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -215,7 +213,7 @@ void TIM1_UP_TIM10_IRQHandler(void)
   /* USER CODE END TIM1_UP_TIM10_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 1 */
-  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xAC,2,t,sizeof(t),1000)!=HAL_OK);		//发�?�获取数值指�???????????????
+  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xAC,2,t,sizeof(t),1000)!=HAL_OK);		//发�?�获取数值指�???????????????
   while(HAL_I2C_Master_Receive(&hi2c1,AHT10_Address,AHT10_Data,6,1000)!=HAL_OK);
   temperture=(AHT10_Data[3] & 0x0F) << 16 | AHT10_Data[4] << 8 | AHT10_Data[5];
   temperture=temperture*200;
@@ -275,24 +273,6 @@ void TIM3_IRQHandler(void)
   while(HAL_I2C_Mem_Read(&hi2c3,CCS811_Address,ERROR_ID_REG,1,&error,1,1000)!=HAL_OK);
   co2=(CCS811_Data[0]<<8)+CCS811_Data[1];
   /* USER CODE END TIM3_IRQn 1 */
-}
-
-/**
-  * @brief This function handles USART1 global interrupt.
-  */
-void USART1_IRQHandler(void)
-{
-  /* USER CODE BEGIN USART1_IRQn 0 */
-	HAL_Delay(500);
-//	HAL_UART_Transmit(&huart1,temperture,sizeof(temperture),10000);
-	HAL_Delay(500);
-  /* USER CODE END USART1_IRQn 0 */
-  HAL_UART_IRQHandler(&huart1);
-  /* USER CODE BEGIN USART1_IRQn 1 */
-//	HAL_UART_Transmit(&huart1,(uint8_t *)RH,sizeof(RH),10000);
-	HAL_Delay(500);
-//	HAL_UART_Transmit(&huart1,(uint8_t *)light,sizeof(light),10000);
-  /* USER CODE END USART1_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
