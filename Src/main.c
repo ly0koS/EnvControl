@@ -36,13 +36,8 @@ uint8_t j=0x00;
 float temperture;
 float RH;
 float light;
-char tp[2];
-char hum[3];
-char lg[4];
-char co[3];
 uint8_t AHT10_CalibrateCmd[3]={0xA8, 0x08, 0x00};
 uint8_t AHT10_MeasureCmd[3]={0xAC, 0x33, 0x00};
-uint16_t co2;
 uint8_t GY30_POWERON=0x01;
 uint8_t GY30_CHRM=0x10;
 /* USER CODE END PD */
@@ -118,20 +113,21 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_FSMC_Init();
-  MX_I2C1_Init();
-  MX_I2C2_Init();
-  MX_I2C3_Init();
+//  MX_I2C1_Init();
+//  MX_I2C2_Init();
+//  MX_I2C3_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_Base_Start_IT(&htim1);
-  HAL_TIM_Base_Start_IT(&htim2);
-  HAL_TIM_Base_Start_IT(&htim3);
   LCD_Init();
   LCD_DisplayOn();
   LCD_Display_Dir(1);
   POINT_COLOR=BLUE;
+  LCD_DisplayString(0,0,200,200,24,"INIT");
+  HAL_TIM_Base_Start_IT(&htim1);
+  HAL_TIM_Base_Start_IT(&htim2);
+  HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -141,27 +137,27 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    if(co2>450)
-    	HAL_GPIO_WritePin(GPIOE, fan1_Pin, GPIO_PIN_SET);
+    if(co2>420)
+    	HAL_GPIO_WritePin(fan1_GPIO_Port, fan1_Pin, GPIO_PIN_RESET);
 	else
-		HAL_GPIO_WritePin(GPIOE, fan1_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(fan1_GPIO_Port, fan1_Pin, GPIO_PIN_SET);
 	if(temperture<18)
 	{
-		HAL_GPIO_WritePin(GPIOE, temp_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOE, temp_Pin, GPIO_PIN_RESET);
 		HAL_Delay(1000);
-		HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_RESET);
 	}
 	else if(temperture>29)
 	{
-		HAL_GPIO_WritePin(GPIOE, temp_Pin, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOE, temp_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_RESET);
 	}
 	else
 	{
-		HAL_GPIO_WritePin(GPIOE, temp_Pin, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOE, temp_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_SET);
 	}
-	if(light>200)
+	if(light<200)
 	{
 		HAL_GPIO_WritePin(GPIOE, light_Pin, GPIO_PIN_RESET);
 	}
@@ -175,14 +171,15 @@ int main(void)
 	}
 	else if(RH>75)
 	{
-		HAL_GPIO_WritePin(RH_Minus_GPIO_Port, RH_Minus_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(RH_Minus_GPIO_Port, RH_Minus_Pin, GPIO_PIN_RESET);
 		HAL_Delay(1000);
-		HAL_GPIO_WritePin(GPIOE, fan1_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOE, fan1_Pin, GPIO_PIN_RESET);
 	}
 	else
 	{
-		HAL_GPIO_WritePin(RH_Minus_GPIO_Port, RH_Minus_Pin, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOE, fan1_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(RH_Minus_GPIO_Port, RH_Minus_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOE, fan1_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOE, RH_Plus_Pin, GPIO_PIN_SET);
 	}
 	x1=(uint8_t)temperture;
 	x2=(uint8_t)RH;
@@ -190,7 +187,6 @@ int main(void)
 	sprintf(tp,"%d",x1);
 	sprintf(hum,"%d",x2);
 	sprintf(lg,"%4d",x3);
-	sprintf(co,"%3d",co2);
 	LCD_DisplayString(85,10,200,200,24,"Temperture:");
 	LCD_DisplayString(215,10,200,200,24,(uint8_t *)tp);
 	LCD_DisplayString(180,50,200,200,24,"RH:");
@@ -199,15 +195,6 @@ int main(void)
 	LCD_DisplayString(115,90,96,96,24,"Light:");
 	LCD_DisplayString(195,90,96,96,24,(uint8_t *)lg);
 	LCD_DisplayString(255,90,24,24,24,"lx");
-	LCD_DisplayString(155,130,96,96,24,"CO2:");
-	if(co2<1000)
-	{
-		LCD_DisplayString(200,130,200,200,24,(uint8_t *)co);
-		LCD_DisplayString(255,130,96,96,24,"ppm");
-	}
-	else
-		LCD_DisplayString(200,130,96,96,24,"!!!");
-	HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }
@@ -337,6 +324,7 @@ static void MX_I2C3_Init(void)
 {
 
   /* USER CODE BEGIN I2C3_Init 0 */
+	uint8_t mode=0x10;
   /* USER CODE END I2C3_Init 0 */
 
   /* USER CODE BEGIN I2C3_Init 1 */
@@ -367,7 +355,8 @@ static void MX_I2C3_Init(void)
   while(HAL_I2C_Master_Receive(&hi2c3,CCS811_Address,&CCS811_Data,1,1000)!=HAL_OK);
   if(!(CCS811_Data[0] & 0x80))
 	  return HAL_ERROR;
-
+  while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,MEAS_Mode_Reg,1,&mode,1,1000)!=HAL_OK);
+  while(HAL_I2C_Mem_Read(&hi2c3,CCS811_Address,MEAS_Mode_Reg,1,&mode,1,1000)!=HAL_OK);
   /* USER CODE END I2C3_Init 2 */
 
 }
@@ -482,9 +471,9 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 21999;
+  htim3.Init.Prescaler = 21000;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 21999;
+  htim3.Init.Period = 21000;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
@@ -528,11 +517,14 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOG_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, temp_Pin|RH_Plus_Pin|light_Pin|fan1_Pin 
-                          |fan2_Pin|fan3_RH_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, temp_Pin|RH_Plus_Pin|light_Pin|fan2_Pin 
+                          |fan3_RH_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(RH_Minus_GPIO_Port, RH_Minus_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(fan1_GPIO_Port, fan1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_15, GPIO_PIN_RESET);
@@ -540,10 +532,10 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(nWake_GPIO_Port, nWake_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pins : temp_Pin RH_Plus_Pin light_Pin fan1_Pin 
-                           fan2_Pin fan3_RH_Pin */
-  GPIO_InitStruct.Pin = temp_Pin|RH_Plus_Pin|light_Pin|fan1_Pin 
-                          |fan2_Pin|fan3_RH_Pin;
+  /*Configure GPIO pins : temp_Pin RH_Plus_Pin light_Pin fan2_Pin 
+                           fan3_RH_Pin */
+  GPIO_InitStruct.Pin = temp_Pin|RH_Plus_Pin|light_Pin|fan2_Pin 
+                          |fan3_RH_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -555,6 +547,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(RH_Minus_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : fan1_Pin */
+  GPIO_InitStruct.Pin = fan1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(fan1_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PB15 */
   GPIO_InitStruct.Pin = GPIO_PIN_15;

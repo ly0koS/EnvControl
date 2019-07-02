@@ -47,6 +47,10 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
+char co[3];
+char tp[2];
+char hum[3];
+char lg[4];
 uint8_t AHT10_CalibrateCmd[3];
 uint8_t AHT10_MeasureCmd[3];
 uint8_t AHT10_Data[6];
@@ -79,14 +83,14 @@ void delay(uint8_t k);
 #define RH_Plus_GPIO_Port GPIOE
 #define light_Pin GPIO_PIN_4
 #define light_GPIO_Port GPIOE
-#define fan1_Pin GPIO_PIN_5
-#define fan1_GPIO_Port GPIOE
 #define fan2_Pin GPIO_PIN_6
 #define fan2_GPIO_Port GPIOE
 #define RH_Minus_Pin GPIO_PIN_13
 #define RH_Minus_GPIO_Port GPIOC
 #define I2C2_SDA_Pin GPIO_PIN_0
 #define I2C2_SDA_GPIO_Port GPIOF
+#define fan1_Pin GPIO_PIN_5
+#define fan1_GPIO_Port GPIOF
 #define FSMC_D4_Pin GPIO_PIN_7
 #define FSMC_D4_GPIO_Port GPIOE
 #define FSMC_D5_Pin GPIO_PIN_8
