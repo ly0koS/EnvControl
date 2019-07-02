@@ -23,6 +23,7 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "LCD.H"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -213,7 +214,7 @@ void TIM1_UP_TIM10_IRQHandler(void)
   /* USER CODE END TIM1_UP_TIM10_IRQn 0 */
   HAL_TIM_IRQHandler(&htim1);
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 1 */
-  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xAC,2,t,sizeof(t),1000)!=HAL_OK);		//发�?�获取数值指�???????????????
+  while(HAL_I2C_Mem_Write(&hi2c1,AHT10_Address,0xAC,2,t,sizeof(t),1000)!=HAL_OK);		//发�?�获取数值指�???????????????????????
   while(HAL_I2C_Master_Receive(&hi2c1,AHT10_Address,AHT10_Data,6,1000)!=HAL_OK);
   temperture=(AHT10_Data[3] & 0x0F) << 16 | AHT10_Data[4] << 8 | AHT10_Data[5];
   temperture=temperture*200;
@@ -247,7 +248,7 @@ void TIM2_IRQHandler(void)
 void TIM3_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM3_IRQn 0 */
-	uint8_t mode=0x10;
+	delay(100000);
 	uint8_t error;
 	uint8_t correct[2];
 	correct[0]=(uint8_t)(temperture+25)<<1;
@@ -257,11 +258,12 @@ void TIM3_IRQHandler(void)
   /* USER CODE BEGIN TIM3_IRQn 1 */
   if(correct[0]>0&&correct[1]>5)
   {
-	  while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,ENV_Data,2,&correct,2,1000)!=HAL_OK);
+	  if(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,ENV_Data,2,&correct,2,100)!=HAL_OK)
+	  {
+		  LCD_DisplayString(200,130,96,96,24,"ERR");
+	  }
   }
-  while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,MEAS_Mode_Reg,1,&mode,1,1000)!=HAL_OK);
-  while(HAL_I2C_Mem_Read(&hi2c3,CCS811_Address,MEAS_Mode_Reg,1,&mode,1,1000)!=HAL_OK);
-  delay(40000);
+  delay(10000);
   while(HAL_I2C_Mem_Write(&hi2c3,CCS811_Address,STATUS,0,&CCS811_Data,0,1000)!=HAL_OK);
   while(HAL_I2C_Master_Receive(&hi2c3,CCS811_Address,&CCS811_Data,1,1000)!=HAL_OK);
   if(CCS811_Data[0] & 0x8)
@@ -272,6 +274,20 @@ void TIM3_IRQHandler(void)
   }
   while(HAL_I2C_Mem_Read(&hi2c3,CCS811_Address,ERROR_ID_REG,1,&error,1,1000)!=HAL_OK);
   co2=(CCS811_Data[0]<<8)+CCS811_Data[1];
+  if(co2==0)
+  {
+	  LCD_DisplayString(200,130,96,96,24,"LOW");
+	  delay(10000);
+  }
+  sprintf(co,"%3d",co2);
+  LCD_DisplayString(155,130,96,96,24,"CO2:");
+  if(co2<1000)
+  {
+	  LCD_DisplayString(200,130,96,96,24,(uint8_t *)co);
+	  LCD_DisplayString(255,130,96,96,24,"ppm");
+  }
+  else
+	  LCD_DisplayString(200,130,96,96,24,"!!!");
   /* USER CODE END TIM3_IRQn 1 */
 }
 
