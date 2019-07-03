@@ -113,18 +113,17 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_FSMC_Init();
-//  MX_I2C1_Init();
-//  MX_I2C2_Init();
-//  MX_I2C3_Init();
+  MX_I2C1_Init();
+  MX_I2C2_Init();
+  MX_I2C3_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   LCD_Init();
   LCD_DisplayOn();
-  LCD_Display_Dir(1);
+  LCD_Display_Dir(0);
   POINT_COLOR=BLUE;
-  LCD_DisplayString(0,0,200,200,24,"INIT");
   HAL_TIM_Base_Start_IT(&htim1);
   HAL_TIM_Base_Start_IT(&htim2);
   HAL_TIM_Base_Start_IT(&htim3);
@@ -137,7 +136,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    if(co2>420)
+    if(co2>450)
     	HAL_GPIO_WritePin(fan1_GPIO_Port, fan1_Pin, GPIO_PIN_RESET);
 	else
 		HAL_GPIO_WritePin(fan1_GPIO_Port, fan1_Pin, GPIO_PIN_SET);
@@ -147,7 +146,7 @@ int main(void)
 		HAL_Delay(1000);
 		HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_RESET);
 	}
-	else if(temperture>29)
+	else if(temperture>32)
 	{
 		HAL_GPIO_WritePin(GPIOE, temp_Pin, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(GPIOE, fan2_Pin, GPIO_PIN_RESET);
@@ -165,7 +164,7 @@ int main(void)
 	{
 		HAL_GPIO_WritePin(GPIOE, light_Pin, GPIO_PIN_SET);
 	}
-	if(RH<40)
+	if(RH<55)
 	{
 		HAL_GPIO_WritePin(GPIOE, RH_Plus_Pin, GPIO_PIN_RESET);
 	}
@@ -174,6 +173,7 @@ int main(void)
 		HAL_GPIO_WritePin(RH_Minus_GPIO_Port, RH_Minus_Pin, GPIO_PIN_RESET);
 		HAL_Delay(1000);
 		HAL_GPIO_WritePin(GPIOE, fan1_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOE, RH_Plus_Pin, GPIO_PIN_SET);
 	}
 	else
 	{
@@ -187,14 +187,14 @@ int main(void)
 	sprintf(tp,"%d",x1);
 	sprintf(hum,"%d",x2);
 	sprintf(lg,"%4d",x3);
-	LCD_DisplayString(85,10,200,200,24,"Temperture:");
-	LCD_DisplayString(215,10,200,200,24,(uint8_t *)tp);
-	LCD_DisplayString(180,50,200,200,24,"RH:");
-	LCD_DisplayString(215,50,200,200,24,(uint8_t *)hum);
-	LCD_DisplayString(255,50,24,24,24,"%");
-	LCD_DisplayString(115,90,96,96,24,"Light:");
-	LCD_DisplayString(195,90,96,96,24,(uint8_t *)lg);
-	LCD_DisplayString(255,90,24,24,24,"lx");
+	LCD_DisplayString(30,0,200,200,24,"Temp:");
+	LCD_DisplayString(100,0,200,200,24,(uint8_t *)tp);
+	LCD_DisplayString(30,50,200,200,24,"RH:");
+	LCD_DisplayString(100,50,200,200,24,(uint8_t *)hum);
+	LCD_DisplayString(160,50,24,24,24,"%");
+	LCD_DisplayString(30,100,96,96,24,"Light:");
+	LCD_DisplayString(100,100,96,96,24,(uint8_t *)lg);
+	LCD_DisplayString(160,100,24,24,24,"lx");
   }
   /* USER CODE END 3 */
 }

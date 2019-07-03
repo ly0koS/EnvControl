@@ -276,18 +276,18 @@ void TIM3_IRQHandler(void)
   co2=(CCS811_Data[0]<<8)+CCS811_Data[1];
   if(co2==0)
   {
-	  LCD_DisplayString(200,130,96,96,24,"LOW");
+	  LCD_DisplayString(100,150,96,96,24,"LOW");
 	  delay(10000);
   }
   sprintf(co,"%3d",co2);
-  LCD_DisplayString(155,130,96,96,24,"CO2:");
+  LCD_DisplayString(30,150,96,96,24,"CO2:");
   if(co2<1000)
   {
-	  LCD_DisplayString(200,130,96,96,24,(uint8_t *)co);
-	  LCD_DisplayString(255,130,96,96,24,"ppm");
+	  LCD_DisplayString(100,150,96,96,24,(uint8_t *)co);
+	  LCD_DisplayString(160,150,96,96,24,"ppm");
   }
   else
-	  LCD_DisplayString(200,130,96,96,24,"!!!");
+	  LCD_DisplayString(100,150,96,96,24,"!!!");
   /* USER CODE END TIM3_IRQn 1 */
 }
 
