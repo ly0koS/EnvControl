@@ -88,7 +88,6 @@ static void MX_TIM3_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	uint8_t hello[]="\r\nInitialize ENVControl!\n\r";
   /* USER CODE END 1 */
   
 
@@ -113,9 +112,9 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_FSMC_Init();
-  MX_I2C1_Init();
-  MX_I2C2_Init();
-  MX_I2C3_Init();
+//  MX_I2C1_Init();
+//  MX_I2C2_Init();
+//  MX_I2C3_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
@@ -124,9 +123,9 @@ int main(void)
   LCD_DisplayOn();
   LCD_Display_Dir(0);
   POINT_COLOR=BLUE;
-  HAL_TIM_Base_Start_IT(&htim1);
-  HAL_TIM_Base_Start_IT(&htim2);
-  HAL_TIM_Base_Start_IT(&htim3);
+//  HAL_TIM_Base_Start_IT(&htim1);
+//  HAL_TIM_Base_Start_IT(&htim2);
+//  HAL_TIM_Base_Start_IT(&htim3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -633,7 +632,7 @@ static void MX_FSMC_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void delay(uint8_t k)
+void delay(uint32_t k)
 {
 	uint8_t j;
 	while(k--)
